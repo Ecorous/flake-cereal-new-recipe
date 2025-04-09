@@ -27,7 +27,7 @@
         user = "git";
       };
       "*" = {
-        extraOptions = { IdentityAgent = "~/.1password/agent.sock"; }
+        extraOptions = { IdentityAgent = "~/.1password/agent.sock"; };
       };
     }; 
     swaylock = {
