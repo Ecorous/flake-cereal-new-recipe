@@ -39,7 +39,6 @@
   hardware.graphics = { # TODO: do proper individual graphics for each system. nixos wiki on video acceleration
     enable = true;
     extraPackages = [ pkgs.libGL ];
-    setLdLibraryPath = true;
   };
 
   sound.enable = true;
