@@ -19,7 +19,7 @@
     ghostty = {
       enable = true;
       settings.theme = "catppuccin-mocha";
-      background-opacity = 0.4;
+      settings.background-opacity = 0.4;
     };
     git = {
       "github.com" = {
