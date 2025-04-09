@@ -8,10 +8,6 @@
     ../common/bluetooth.nix
   ];
 
-  programs = [];
-
-  environment.systemPackages = with pkgs; [];
-
   hardware.graphics.extraPackages = [ pkgs.intel-media-driver ];
 
   networking.hostName = "juniper";
