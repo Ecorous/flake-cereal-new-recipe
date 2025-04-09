@@ -2,7 +2,7 @@
     description = "Flake Cereal - Brand new recipe!";
 
     inputs = {
-        nixpkgs.url = "github:nixos/nixpkgs/nixpks?ref=nixos-unstable";
+        nixpkgs.url = "github:nixos/nixpkgs/nixpkgs?ref=nixos-unstable";
         home-manager.url = "github:nix-community/home-manager";
         home-manager.inputs.nixpkgs.follows = "nixpkgs";
     };
