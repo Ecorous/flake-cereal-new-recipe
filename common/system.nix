@@ -78,5 +78,5 @@
   networking.firewall.enable = false;
 
 
-  system.stateVersion = "25.05" # no touchy. bad.
+  system.stateVersion = "25.05"; # no touchy. bad.
 }
