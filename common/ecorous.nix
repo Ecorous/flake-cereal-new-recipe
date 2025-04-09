@@ -22,12 +22,14 @@
       settings.background-opacity = 0.4;
     };
     git = {
-      "github.com" = {
-        hostname = "github.com";
-        user = "git";
-      };
-      "*" = {
-        extraOptions = { IdentityAgent = "~/.1password/agent.sock"; };
+      matchBlocks = {
+        "github.com" = {
+          hostname = "github.com";
+          user = "git";
+        };
+        "*" = {
+          extraOptions = { IdentityAgent = "~/.1password/agent.sock"; };
+        };
       };
     }; 
     swaylock = {
