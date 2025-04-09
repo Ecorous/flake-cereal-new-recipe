@@ -18,5 +18,5 @@
       brightnessctl
       fuzzel
     ];
-  }
+  };
 }
