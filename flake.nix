@@ -22,6 +22,6 @@
                     ./elder/system.nix 
                 ];
             };
-        }
+        };
     };
 }
