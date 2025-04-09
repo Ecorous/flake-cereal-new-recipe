@@ -19,6 +19,6 @@
       content-align=center
       background=/usr/share/backgrounds/lycorecowallpaper.png
       '';
-    }
+    };
   };
 }
