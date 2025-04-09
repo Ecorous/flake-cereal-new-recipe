@@ -1,10 +1,10 @@
-{ config, libs, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 {
   imports = [
     ./lightdm.nix
     ./graphical.nix
   ];
-  
+
   services.displayManager.defaultSession = "sway";
   programs.sway = {
     enable = true;
