@@ -19,7 +19,7 @@
     settings = {
       Theme = {
         Current = "breeze";
-        ThemeDir = lib.mkForce "/sddm_themes";
+        # ThemeDir = lib.mkForce "/sddm_themes";
       };
       #"Background" = "/usr/share/backgrounds/lycorecowallpaper.png";
     };

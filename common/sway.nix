@@ -5,6 +5,8 @@
     ./graphical.nix
   ];
 
+  services.displayManager.sddm.settings.Theme.ThemeDir = lib.mkForce "/sddm_themes";
+
   services.displayManager.defaultSession = "sway";
   programs.sway = {
     enable = true;
