@@ -3,9 +3,10 @@
 {
   imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
 
+  boot.initrd.availableKernelModules = [ "xhci_pci" "ehci_pci" "ahci" "usb_storage" "sd_mod" "rtsx_pci_sdmmc" ];
+  boot.initrd.kernelModules = [ ]; 
   boot.kernelModules = [ "kvm-intel "];
-  # TODO - put actual hardware config in here by using the live
-  # TODO   environemnt, this is just an estimated config 
+  boot.extraModulePackages = [ ];
 
   fileSystems."/" = {
     device = "/dev/disk/by-label/juniperRoot"; # FIXME - I don't know what this is yet - need to investigate with a proper live usb. this is just a draft
@@ -15,6 +16,7 @@
   fileSystems."/boot" = {
     device = "/dev/disk/by-label/juniperBoot"; # FIXME - same as above
     fsType = "vfat";
+    options = [ "fmask=0022" "dmask=0022" ];
   };
 
   swapDevices = [{
