@@ -31,7 +31,7 @@
                     ./yggdrasil/system.nix
                     home-manager.home-manager ./yggdrasil/home-manager.nix
                 ];
-            }
+            };
         };
     };
 }
