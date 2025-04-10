@@ -36,6 +36,7 @@
 
   users.defaultUserShell = pkgs.nushell;
   users.users.root.shell = pkgs.nushell;
+  users.users.root.initialPassword = "colonthree";
   users.users.ecorous = {
     description = "Dawn";
     isNormalUser = true;
