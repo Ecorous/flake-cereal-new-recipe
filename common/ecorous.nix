@@ -11,7 +11,7 @@
       matchBlocks."*" = {
         extraOptions = {
           GatewayPorts = "yes";
-          extraOptions = { IdentityAgent = "~/.1password/agent.sock"; };
+          IdentityAgent = "~/.1password/agent.sock";
         };
       };
       matchBlocks."github.com" = {
