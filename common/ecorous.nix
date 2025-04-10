@@ -1,3 +1,4 @@
+{ config, lib, pkgs, ... }:
 {
   home.stateVersion = "24.11";
 
@@ -26,14 +27,26 @@
       settings.theme = "catppuccin-mocha";
       settings.background-opacity = 0.4;
     };
-    git.enable = true;
+    git = {
+      enable = true;
+      userEmail = "ecorous@outlook.com";
+      userName = "Ecorous";
+      extraConfig = {
+        commit.gpgSign = true;
+        gpg.format = "ssh";
+        user.signingkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIazU90lTF7rPY11hzMA2CdOXmdaOBTZWJ25PBDl1gzS";
+        "gpg \"ssh\"".program = "${lib.getExe' pkgs._1password-gui "op-ssh-sign"}";
+      };
+    };
     swaylock = {
       enable = true;
+      package = null;
       settings = {
         grace = 2;
         image = "/home/ecorous/lycorecowallpaper.png";
-        show-keyboard-layout = "";
-        indicator-caps-lock = "";
+        show-keyboard-layout = true;
+        indicator-caps-lock = true;
+        effect-blur = "50x10";
       };
     };
   };
@@ -67,6 +80,9 @@
           };
         };
       }];
+      keybindings = lib.mkOptionDefault {
+        "Mod4+l" = "exec ${pkgs.swaylock-effects}/bin/swaylock";
+      };
     };
     extraConfig = ''
     blur enable
