@@ -29,7 +29,7 @@
                 specialArgs = { inherit inputs; };
                 modules = [
                     ./yggdrasil/system.nix
-                    home-manager.home-manager ./yggdrasil/home-manager.nix
+                    home-manager.nixosModules.home-manager ./yggdrasil/home-manager.nix
                 ];
             };
         };
