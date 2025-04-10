@@ -6,6 +6,16 @@
         ../common/bluetooth.nix
         ../common/nvidia.nix
         ../common/plasma.nix
+        ../common/docker.nix
+    ];
+
+    virtualisation.podman = {
+        enable = true;
+        dockerCompat = true;
+    };
+
+    environment.systemPackages = with pkgs; [
+        distrobox
     ];
 
     networking.hostName = "yggdrasil";
