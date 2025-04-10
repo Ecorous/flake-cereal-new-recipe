@@ -41,6 +41,5 @@
     extraPackages = [ pkgs.libGL ];
   };
 
-  sound.enable = true;
   services.pipewire = import ./pipewire.nix;
 }
