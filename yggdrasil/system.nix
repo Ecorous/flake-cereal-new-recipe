@@ -6,7 +6,7 @@
         ../common/bluetooth.nix
         ../common/nvidia.nix
         ../common/plasma.nix
-        ../common/docker.nix
+        # ../common/docker.nix
     ];
 
     virtualisation.podman = {
