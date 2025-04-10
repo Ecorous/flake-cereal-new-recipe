@@ -60,7 +60,11 @@
         colors = {
           statusline = "#ffffffff";
           background = "#323232ff";
-          inactiveWorkspace = "#323232aa #323232aa #5c5c5caa";
+          inactiveWorkspace = {
+            background = "#323232aa";
+            border = "#323232aa";
+            text = "#5c5c5caa";
+          };
         };
       }];
     };
