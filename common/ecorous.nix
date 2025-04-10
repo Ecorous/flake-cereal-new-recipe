@@ -11,7 +11,12 @@
       matchBlocks."*" = {
         extraOptions = {
           GatewayPorts = "yes";
+          extraOptions = { IdentityAgent = "~/.1password/agent.sock"; };
         };
+      };
+      matchBlocks."github.com" = {
+        hostname = "github.com";
+        user = "git";
       };
     };
     btop.enable = true;
@@ -21,17 +26,7 @@
       settings.theme = "catppuccin-mocha";
       settings.background-opacity = 0.4;
     };
-    git = {
-      matchBlocks = {
-        "github.com" = {
-          hostname = "github.com";
-          user = "git";
-        };
-        "*" = {
-          extraOptions = { IdentityAgent = "~/.1password/agent.sock"; };
-        };
-      };
-    }; 
+    git.enable = true;
     swaylock = {
       enable = true;
       settings = {
