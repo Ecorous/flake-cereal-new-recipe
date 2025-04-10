@@ -17,7 +17,7 @@
     element-desktop
     beeper
     signal-desktop
-    dolphin
+    kdePackages.dolphin
     vscode-fhs
     mpv
     jellyfin-mpv-shim
