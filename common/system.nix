@@ -32,6 +32,7 @@
     blahaj
     kitty.terminfo
     ghostty.terminfo
+    nixfmt
   ];
 
   users.defaultUserShell = pkgs.nushell;

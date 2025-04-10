@@ -25,7 +25,6 @@
     ghostty = {
       enable = true;
       settings.theme = "catppuccin-mocha";
-      settings.background-opacity = 0.4;
     };
     git = {
       enable = true;
@@ -46,16 +45,6 @@
       enable = true;
       indicator = true;
     };
-    mako = {
-      enable = true;
-      borderRadius = 7;
-      defaultTimeout = 6000;
-      layer = "overlay";
-      extraConfig = ''
-      icon-border-radius=15
-      '';
-    };
-    flameshot.enable = true;
   };
 
   home.file = {
