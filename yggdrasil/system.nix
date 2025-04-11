@@ -6,6 +6,7 @@
         ../common/bluetooth.nix
         ../common/nvidia.nix
         ../common/plasma.nix
+        ../common/virtualisation.nix
         # ../common/docker.nix
     ];
 
