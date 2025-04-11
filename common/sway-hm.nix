@@ -6,7 +6,7 @@
       package = null;
       settings = {
         grace = 2;
-        image = "/home/ecorous/lycorecowallpaper.png";
+        # image = "/home/ecorous/lycorecowallpaper.png";
         show-keyboard-layout = true;
         indicator-caps-lock = true;
         effect-blur = "50x10";
@@ -21,7 +21,7 @@
       menu = "fuzzel";
       modifier = "Mod4";
       terminal = "ghostty";
-      output."*".bg = "~/lycorecowallpaper.png fill";
+      # output."*".bg = "~/lycorecowallpaper.png fill";
       input = {
         "type:keyboard" = {
           xkb_layout = "gb";
