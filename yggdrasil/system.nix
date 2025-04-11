@@ -18,7 +18,10 @@
         distrobox
     ];
 
-    services.sunshine.enable = true;
+    services.sunshine = {
+        enable = true;
+        capSysAdmin = true;
+    };
 
     networking.hostName = "yggdrasil";
 }
