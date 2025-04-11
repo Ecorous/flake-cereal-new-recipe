@@ -1,4 +1,4 @@
-{ config, libs, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 {
   programs = {
     swaylock = {
@@ -7,6 +7,7 @@
       settings = {
         grace = 2;
         # image = "/home/ecorous/lycorecowallpaper.png";
+        image = "/run/current-system/sw/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png";
         show-keyboard-layout = true;
         indicator-caps-lock = true;
         effect-blur = "50x10";
@@ -21,6 +22,7 @@
       menu = "fuzzel";
       modifier = "Mod4";
       terminal = "ghostty";
+      output."*".bg = "/run/current-system/sw/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png fill";
       # output."*".bg = "~/lycorecowallpaper.png fill";
       input = {
         "type:keyboard" = {
@@ -55,7 +57,8 @@
     corner_radius 5
     default_dim_inactive 0.25
     
-    exec mako'';
+    exec mako
+    exec ghostty'';
     package = null;
   };
   services.mako = {
@@ -63,8 +66,26 @@
     borderRadius = 7;
     defaultTimeout = 6000;
     layer = "overlay";
-    extraConfig = ''
+    extraConfig = '' 
     icon-border-radius=15
     '';
+  };
+  programs.fuzzel = {
+    enable = true;
+    settings = {
+      colors = {
+        background = "1e1e2edd";
+        text = "cdd6f4ff";
+        prompt = "bac2deff";
+        placeholder = "7f849cff";
+        input = "cdd6f4ff";
+        match = "b4befeff";
+        selection = "585b70ff";
+        selection-text = "cdd6f4ff";
+        selection-match = "b4befeff";
+        counter = "7f849cff";
+        border = "b4befeff";
+      };
+    };
   };
 }
