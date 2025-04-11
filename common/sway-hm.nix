@@ -58,4 +58,13 @@
     exec mako'';
     package = null;
   };
+  services.mako = {
+    enable = true;
+    borderRadius = 7;
+    defaultTimeout = 6000;
+    layer = "overlay";
+    extraConfig = ''
+    icon-border-radius=15
+    '';
+  };
 }

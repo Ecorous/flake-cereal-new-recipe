@@ -29,13 +29,5 @@
   qt.platformTheme = "qt5ct";
   environment.sessionVariables.GTK_THEME = "Breeze-Dark";
   environment.sessionVariables.MOZ_ENABLE_WAYLAND = 0;
-  services.mako = {
-    enable = true;
-    borderRadius = 7;
-    defaultTimeout = 6000;
-    layer = "overlay";
-    extraConfig = ''
-    icon-border-radius=15
-    '';
-  };
+  
 }
