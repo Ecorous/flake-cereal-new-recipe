@@ -18,5 +18,7 @@
         distrobox
     ];
 
+    services.sunshine.enable = true;
+
     networking.hostName = "yggdrasil";
 }
