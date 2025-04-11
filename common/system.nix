@@ -33,6 +33,7 @@
     kitty.terminfo
     ghostty.terminfo
     nixfmt
+    parted
   ];
 
   users.defaultUserShell = pkgs.nushell;
