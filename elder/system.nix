@@ -11,6 +11,9 @@
   boot.kernel.sysctl = {
     "net.ipv4.forward" = 1;
   };
+  environment.systemPackages = with pkgs; [
+    cloudflared
+  ];
   boot.loader.grub = {
     enable = true;
     efiSupport = true;
@@ -21,7 +24,7 @@
   users.users = {
     david = {
       isNormalUser = true;
-      extraGroups = [ "smbaccu"]
+      extraGroups = [ "smbaccu"];
     };
     tirfarthoinn = {
       isNormalUser = true;
@@ -69,10 +72,12 @@
       ingress = {
         "jellyfin.ecorous.org" = "http://localhost:8096";
         "jellyfin-vue.ecorous.org" = "http://localhost:8097";
-        default = "http_status:404";
-        credentialsFile = "/root/.cloudflared/bd0fa580-9dd0-4fa6-a3c4-79bac8c50f1f.json";
+        #default = "http_status:404";
+        #credentialsFile = "/root/.cloudflared/bd0fa580-9dd0-4fa6-a3c4-79bac8c50f1f.json";
       };
-    }
+      credentialsFile = "/root/.cloudflared/bd0fa580-9dd0-4fa6-a3c4-79bac8c50f1f.json";
+      default = "http_status:404";
+    };
   };
   services.jellyfin.enable = true;
 }
