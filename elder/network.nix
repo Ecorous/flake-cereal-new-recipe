@@ -147,34 +147,21 @@
   services.dnsmasq = {
     enable = true;
     alwaysKeepRunning = true;
-    extraConfig = ''
-      interface=br0
-      domain=elder,192.168.69.1
-      # ^ Domain and Address of the host.
-      dhcp-range=192.168.69.5,192.168.69.254,5m
-      # ^ All IP addresses between that range will be handed out with a 5 minute lease time.
-      # It also reserves the first 10 addresses for static IP's.
-      dhcp-option=3,192.168.69.1
-      # ^ This is the primary DNS. DNSMasq will also be the DNS server, 
-      # since it can cache. You can point this wherever you wish.
-      dhcp-option=121,192.168.69.0/24.192.168.69.1
-      # ^ This is a classless static route. I'm not 100% sure what it does, 
-      # but things seem to work better with it. Apparently Windows ignores this.
-
-      # From here you can set up static IP's for your devices, if you want.
-      # dhcp-host:AA:BB:CC:DD:EE:FF,10.0.0.2
-      # Repeat as needed.
-
-      # DNS
-      listen-address=1,127.0.0.1,10.0.0.1
-      # It listens on both the local and the bridge interface.
-      expand-hosts
-      # This will allow you to refer to devices by their hostname.
-      server=1.1.1.1  
-      # ^ This is Cloudflare's DNS server. You can use whatever you want.
-      server=1.0.0.1
-      address=/elder.int/192.168.69.1
-      # ^ This is a static DNS entry. It will resolve example.com to 10.0.0.1, or in other words, the router.
-    '';
+    settings = {
+      interface = "br0";
+      domain = "elder,192.168.69.1";
+      dhcp-range = "192.168.69.5,192.168.69.254,5m";
+      dhcp-option = [
+        "3,192.168.69.1"
+        "121,192.168.69.0/24,192.168.69.1"
+      ];
+      listen-address = [ "127.0.0.1" "192.168.69.1" ];
+      expand-hosts = true;
+      server = [
+        "1.1.1.1"
+        "1.0.0.1"
+      ];
+      address = [ "/elder.int/192.168.69.1" ];
+    };
   };
 }
