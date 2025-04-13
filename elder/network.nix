@@ -7,7 +7,7 @@
       wlp0s26u1u2.useDHCP = true;
       en0.useDHCP = false;
 
-      lan = {
+      en0 = {
         ipv4.addresses = [{
           address = "192.168.69.1";
           prefixLength = 24;
@@ -15,12 +15,12 @@
       };
       
     };
-    vlans = {
-      wan = {
+    ven0s = {
+      wlp0s26u1u2 = {
         id = 10;
         interface = "wlp0s26u1u2";
       };
-      lan = {
+      en0 = {
         id = 20;
         interface = "en0";
       };
@@ -34,7 +34,7 @@
         # enable flow offloading for better throughput
         flowtable f {
           hook ingress priority 0;
-          devices = { wan, lan };
+          devices = { wlp0s26u1u2, en0 };
         }
 
         chain output {
@@ -46,12 +46,12 @@
 
           # Allow trusted networks to access the router
           iifname {
-            "lan",
+            "en0",
           } counter accept
 
           # Allow returning traffic from ppp0 and drop everthing else
-          iifname "wan" ct state { established, related } counter accept
-          iifname "wan" drop
+          iifname "wlp0s26u1u2" ct state { established, related } counter accept
+          iifname "wlp0s26u1u2" drop
         }
 
         chain forward {
@@ -60,19 +60,19 @@
           # enable flow offloading for better throughput
           ip protocol { tcp, udp } flow offload @f
 
-          # Allow trusted network WAN access
+          # Allow trusted network wlp0s26u1u2 access
           iifname {
-                  "lan",
+                  "en0",
           } oifname {
-                  "wan",
-          } counter accept comment "Allow trusted LAN to WAN"
+                  "wlp0s26u1u2",
+          } counter accept comment "Allow trusted en0 to wlp0s26u1u2"
 
-          # Allow established WAN to return
+          # Allow established wlp0s26u1u2 to return
           iifname {
-                  "wan",
+                  "wlp0s26u1u2",
           } oifname {
-                  "lan",
-          } ct state established,related counter accept comment "Allow established back to LANs"
+                  "en0",
+          } ct state established,related counter accept comment "Allow established back to en0s"
         }
       }
 
@@ -84,7 +84,7 @@
         # Setup NAT masquerading on the ppp0 interface
         chain postrouting {
           type nat hook postrouting priority filter; policy accept;
-          oifname "wan" masquerade
+          oifname "wlp0s26u1u2" masquerade
         }
       }
     '';
@@ -92,7 +92,7 @@
   };
   # services.dhcpd4 = {
   #   enable = true;
-  #   interfaces = [ "lan" ];
+  #   interfaces = [ "en0" ];
   #   extraConfig = ''
   #     option domain-name-servers 1.1.1.1 1.0.0.1;
   #     option subnet-mask 255.255.255.0;
@@ -100,7 +100,7 @@
   #     subnet 192.168.69.0 netmask 255.255.255.0 {
   #       option broadcast-address 192.168.69.255;
   #       option routers 192.168.69.1;
-  #       interface lan;
+  #       interface en0;
   #       range 192.168.69.2 192.168.69.254;
   #     }
   #   '';
@@ -109,7 +109,7 @@
     enable = true;
     settings = {
       interfaces-config = {
-        interfaces = [ "lan" ];
+        interfaces = [ "en0" ];
       };
       subnet4 = [{
         id = 1;
