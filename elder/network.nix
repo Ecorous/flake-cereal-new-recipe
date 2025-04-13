@@ -18,11 +18,11 @@
     vlans = {
       wan = {
         id = 10;
-        interface = "wifi";
+        interface = "wlp0s26u1u2";
       };
       lan = {
         id = 20;
-        interface = "eth";
+        interface = "en0";
       };
     };
     nat.enable = false;
