@@ -35,7 +35,7 @@
       channel = 36;
       networks.wlp3s0 = {
         ssid = "crotchgoblins";
-        passphrase = builtins.readFile ./passphrase;
+        authentication.wpaPassword = builtins.readFile ./passphrase;
       };
     };
   };
