@@ -28,6 +28,18 @@
     };
   };
 
+  services.hostapd = {
+    enable = true;
+    radios.wlp0s26u1u2 = {
+      band = "5g";
+      channel = 36;
+      networks.wlp3s0 = {
+        ssid = "crotchgoblins";
+        passphrase = builtins.readFile ./passphrase;
+      };
+    };
+  };
+
   #   interfaces = {
   #     wlp0s26u1u2.useDHCP = true;
   #     eno1.useDHCP = false;
