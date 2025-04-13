@@ -6,6 +6,7 @@
     ../common/system.nix
     ../common/docker.nix
     ../common/virtualisation.nix
+    ./network.nix
   ];
 
   boot.loader.systemd-boot.enable = false;
@@ -20,7 +21,6 @@
     efiSupport = true;
     device = "nodev";
   };
-  networking.hostName = "elder";
   users.groups.smbaccu.gid = 7765;
   users.users = {
     david = {
