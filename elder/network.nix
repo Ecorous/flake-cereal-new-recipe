@@ -5,9 +5,9 @@
     nameservers = [ "1.1.1.1" "1.0.0.1" ];
     interfaces = {
       wlp0s26u1u2.useDHCP = true;
-      en0.useDHCP = false;
+      eno1.useDHCP = false;
 
-      en0 = {
+      eno1 = {
         ipv4.addresses = [{
           address = "192.168.69.1";
           prefixLength = 24;
@@ -24,7 +24,7 @@
         # enable flow offloading for better throughput
         flowtable f {
           hook ingress priority 0;
-          devices = { wlp0s26u1u2, en0 };
+          devices = { wlp0s26u1u2, eno1 };
         }
 
         chain output {
@@ -36,7 +36,7 @@
 
           # Allow trusted networks to access the router
           iifname {
-            "en0",
+            "eno1",
           } counter accept
 
           # Allow returning traffic from ppp0 and drop everthing else
@@ -52,17 +52,17 @@
 
           # Allow trusted network wlp0s26u1u2 access
           iifname {
-                  "en0",
+                  "eno1",
           } oifname {
                   "wlp0s26u1u2",
-          } counter accept comment "Allow trusted en0 to wlp0s26u1u2"
+          } counter accept comment "Allow trusted eno1 to wlp0s26u1u2"
 
           # Allow established wlp0s26u1u2 to return
           iifname {
                   "wlp0s26u1u2",
           } oifname {
-                  "en0",
-          } ct state established,related counter accept comment "Allow established back to en0s"
+                  "eno1",
+          } ct state established,related counter accept comment "Allow established back to eno1s"
         }
       }
 
@@ -82,7 +82,7 @@
   };
   # services.dhcpd4 = {
   #   enable = true;
-  #   interfaces = [ "en0" ];
+  #   interfaces = [ "eno1" ];
   #   extraConfig = ''
   #     option domain-name-servers 1.1.1.1 1.0.0.1;
   #     option subnet-mask 255.255.255.0;
@@ -90,7 +90,7 @@
   #     subnet 192.168.69.0 netmask 255.255.255.0 {
   #       option broadcast-address 192.168.69.255;
   #       option routers 192.168.69.1;
-  #       interface en0;
+  #       interface eno1;
   #       range 192.168.69.2 192.168.69.254;
   #     }
   #   '';
@@ -99,7 +99,7 @@
     enable = true;
     settings = {
       interfaces-config = {
-        interfaces = [ "en0" ];
+        interfaces = [ "eno1" ];
       };
       subnet4 = [{
         id = 1;
