@@ -15,16 +15,6 @@
       };
       
     };
-    ven0s = {
-      wlp0s26u1u2 = {
-        id = 10;
-        interface = "wlp0s26u1u2";
-      };
-      en0 = {
-        id = 20;
-        interface = "en0";
-      };
-    };
     nat.enable = false;
     nftables = {
       enable = true;
