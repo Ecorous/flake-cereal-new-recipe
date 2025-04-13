@@ -29,14 +29,14 @@
   };
 
   services.hostapd = {
-    enable = true;
+    enable = false;
     radios.wlp0s26u1u2 = {
       # band = "5g";
       # channel = 36;
       networks.wlp0s26u1u2 = {
         ssid = "crotchgoblins";
         authentication.mode = "wpa2-sha256";
-        authentication.wpaPassword = builtins.readFile ./passphrase;
+        # authentication.wpaPassword = builtins.readFile ./passphrase;
       };
     };
   };
