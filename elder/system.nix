@@ -5,6 +5,7 @@
     ./hardware.nix
     ../common/system.nix
     ../common/docker.nix
+    ../common/virtualisation.nix
   ];
 
   boot.loader.systemd-boot.enable = false;

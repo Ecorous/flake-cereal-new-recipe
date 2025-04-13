@@ -10,6 +10,8 @@
         # ../common/docker.nix
     ];
 
+    programs.virt-manager.enable = true;
+    
     virtualisation.podman = {
         enable = true;
         dockerCompat = true;
