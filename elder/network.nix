@@ -33,8 +33,9 @@
     radios.wlp0s26u1u2 = {
       band = "5g";
       channel = 36;
-      networks.wlp3s0 = {
+      networks.wlp0s26u1u2-1 = {
         ssid = "crotchgoblins";
+        authentication.mode = "wpa2-sha256";
         authentication.wpaPassword = builtins.readFile ./passphrase;
       };
     };
