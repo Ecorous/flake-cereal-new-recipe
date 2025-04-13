@@ -28,6 +28,7 @@
     nat.enable = false;
     nftables = {
       enable = true;
+      checkRuleset = false;
       ruleset = ''
       table inet filter {
         # enable flow offloading for better throughput
