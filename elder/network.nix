@@ -2,7 +2,7 @@
 {
   networking = {
     hostName = "elder";
-    nameserver = [ "1.1.1.1", "1.0.0.1" ];
+    nameserver = [ "1.1.1.1" "1.0.0.1" ];
     interfaces = {
       wlp0s26u1u2.useDHCP = true;
       en0.useDHCP = false;
