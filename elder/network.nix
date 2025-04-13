@@ -26,6 +26,7 @@
         useDHCP = false;
       };
     };
+  };
 
   #   interfaces = {
   #     wlp0s26u1u2.useDHCP = true;
@@ -143,7 +144,7 @@
   #     }];
   #   };
   # };
-    services.dnsmasq = {
+  services.dnsmasq = {
     enable = true;
     alwaysKeepRunning = true;
     extraConfig = ''
@@ -159,11 +160,11 @@
       dhcp-option=121,192.168.69.0/24.192.168.69.1
       # ^ This is a classless static route. I'm not 100% sure what it does, 
       # but things seem to work better with it. Apparently Windows ignores this.
-      
+
       # From here you can set up static IP's for your devices, if you want.
       # dhcp-host:AA:BB:CC:DD:EE:FF,10.0.0.2
       # Repeat as needed.
-      
+
       # DNS
       listen-address=1,127.0.0.1,10.0.0.1
       # It listens on both the local and the bridge interface.
