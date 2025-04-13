@@ -176,7 +176,7 @@
         "1.1.1.1"
         "1.0.0.1"
       ];
-      address = [ "/elder.int/192.168.69.1" "/yggdrasil.int/192.168.69.2" "/files.yggdrasil.int/162.168.69.2" "/raffle.int/192.168.69.3" ];
+      address = [ "/elder.int/192.168.69.1" "/yggdrasil.int/192.168.69.2" "/files.yggdrasil.int/192.168.69.2" "/raffle.int/192.168.69.3" ];
     };
   };
 }
