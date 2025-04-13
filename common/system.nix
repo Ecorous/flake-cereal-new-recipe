@@ -34,6 +34,8 @@
     ghostty.terminfo
     nixfmt
     parted
+    usbutils
+    pciutils
   ];
 
   users.defaultUserShell = pkgs.nushell;
