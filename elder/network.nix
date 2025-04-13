@@ -89,19 +89,43 @@
     '';
     };
   };
-  services.dhcpd4 = {
-    enable = true;
-    interfaces = [ "lan" ];
-    extraConfig = ''
-      option domain-name-servers 1.1.1.1 1.0.0.1;
-      option subnet-mask 255.255.255.0;
+  # services.dhcpd4 = {
+  #   enable = true;
+  #   interfaces = [ "lan" ];
+  #   extraConfig = ''
+  #     option domain-name-servers 1.1.1.1 1.0.0.1;
+  #     option subnet-mask 255.255.255.0;
 
-      subnet 192.168.69.0 netmask 255.255.255.0 {
-        option broadcast-address 192.168.69.255;
-        option routers 192.168.69.1;
-        interface lan;
-        range 192.168.69.2 192.168.69.254;
-      }
-    '';
+  #     subnet 192.168.69.0 netmask 255.255.255.0 {
+  #       option broadcast-address 192.168.69.255;
+  #       option routers 192.168.69.1;
+  #       interface lan;
+  #       range 192.168.69.2 192.168.69.254;
+  #     }
+  #   '';
+  # };
+  services.kea.dhcp4 = {
+    enable = true;
+    settings = {
+      interfaces-config = {
+        interfaces = [ "lan" ];
+      };
+      subnet4 = [{
+        id = 1;
+        subnet = "192.168.69.0/24";
+        pools = [ { pool = "192.168.69.2 - 192.168.69.254"; } ];
+        option-data = [
+          {
+            name = "routers";
+            data = "192.168.69.1";
+          }
+
+          {
+            name = "domain-name-servers";
+            data = [ "1.1.1.1" "1.0.0.1" ]; 
+          }
+        ];
+      }];
+    };
   };
 }
