@@ -144,6 +144,7 @@
   #     }];
   #   };
   # };
+  networking.dhcpcd.enable = lib.mkForce false;
   services.dnsmasq = {
     enable = true;
     alwaysKeepRunning = true;
