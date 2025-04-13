@@ -49,6 +49,9 @@
       }];
       keybindings = lib.mkOptionDefault {
         "Mod4+l" = "exec ${pkgs.swaylock-effects}/bin/swaylock";
+        "--locked XF86MonBrightnessDown" = "exec ${pkgs.brightnessctl}/bin/brightnessctl set 1-";
+        "--locked XF86MonBrightnessUp" = "exec ${pkgs.brightnessctl}/bin/brightnessctl set 1+";
+        "--locked XF86Tools" = "exec ${pkgs.brightnessctl}/bin/brightnessctl set 0";
       };
     };
     extraConfig = ''
