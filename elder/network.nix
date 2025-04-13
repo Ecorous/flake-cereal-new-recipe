@@ -26,7 +26,9 @@
       };
     };
     nat.enable = false;
-    ruleset = ''
+    nftables = {
+      enable = true;
+      ruleset = ''
       table inet filter {
         # enable flow offloading for better throughput
         flowtable f {
@@ -85,6 +87,7 @@
         }
       }
     '';
+    };
   };
   services.dhcpd4 = {
     enable = true;
