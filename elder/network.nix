@@ -168,6 +168,7 @@
       dhcp-option = [
         "3,192.168.69.1"
         "121,192.168.69.0/24,192.168.69.1"
+        "66,192.168.69.1"
       ];
       dhcp-host = [ "60:cf:84:84:7f:2e,192.168.69.2" "00:19:99:a0:55:4e,192.168.69.3" ];
       listen-address = [ "127.0.0.1" "192.168.69.1" ];
@@ -177,6 +178,9 @@
         "1.0.0.1"
       ];
       address = [ "/elder.int/192.168.69.1" "/yggdrasil.int/192.168.69.2" "/files.yggdrasil.int/192.168.69.2" "/raffle.int/192.168.69.3" ];
+      enable-tftp = true;
+      tftp-root = "/srv/tftp";
+      dhcp-boot = "netboot.xyz.kpxe";
     };
   };
 }
