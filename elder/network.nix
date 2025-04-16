@@ -170,14 +170,14 @@
         "121,192.168.69.0/24,192.168.69.1"
         "66,192.168.69.1"
       ];
-      dhcp-host = [ "60:cf:84:84:7f:2e,192.168.69.2" "00:19:99:a0:55:4e,192.168.69.3" ];
+      dhcp-host = [ "60:cf:84:84:7f:2e,192.168.69.2" "00:19:99:a0:55:4e,192.168.69.3", "94:de:80:c3:cd:5e,192.168.69.4" ];
       listen-address = [ "127.0.0.1" "192.168.69.1" "192.168.1.242" "0.0.0.0" ];
       expand-hosts = true;
       server = [
         "1.1.1.1"
         "1.0.0.1"
       ];
-      address = [ "/elder.int/192.168.69.1" "/yggdrasil.int/192.168.69.2" "/files.yggdrasil.int/192.168.69.2" "/raffle.int/192.168.69.3" ];
+      address = [ "/elder.int/192.168.69.1" "/yggdrasil.int/192.168.69.2" "/files.yggdrasil.int/192.168.69.2" "/raffle.int/192.168.69.3" "/win10.int/192.168.69.4" ];
       enable-tftp = true;
       tftp-root = "/srv/tftp";
       dhcp-boot = "netboot.xyz.kpxe";
