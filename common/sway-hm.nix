@@ -49,9 +49,13 @@
       }];
       keybindings = lib.mkOptionDefault {
         "Mod4+l" = "exec ${pkgs.swaylock-effects}/bin/swaylock";
-        "--locked XF86MonBrightnessDown" = "exec ${pkgs.brightnessctl}/bin/brightnessctl set 1-";
-        "--locked XF86MonBrightnessUp" = "exec ${pkgs.brightnessctl}/bin/brightnessctl set 1+";
-        "--locked XF86Tools" = "exec ${pkgs.brightnessctl}/bin/brightnessctl set 0";
+        # "--locked XF86MonBrightnessDown" = "exec ${pkgs.brightnessctl}/bin/brightnessctl set 1-";
+        # "--locked XF86MonBrightnessUp" = "exec ${pkgs.brightnessctl}/bin/brightnessctl set 1+";
+        # "--locked XF86Tools" = "exec ${pkgs.brightnessctl}/bin/brightnessctl set 0";
+        "--locked XF86MonBrightnessDown" = "exec /home/ecorous/scripts/brightness_down.sh";
+        "--locked XF86MonBrightnessUp" = "exec /home/ecorous/scripts/brightness_up.sh";
+        "--locked XF86Tools" = "exec /home/ecorous/scripts/brightness_toggle.nu";
+        "--locked XF86Search" = "exec /home/ecorous/scripts/brightness_set_1.sh";
       };
     };
     extraConfig = ''
