@@ -10,5 +10,5 @@
   wsl.wslConf.user.default = "ecorous";
 
 
-  networking.hostname = "wsl";
+  networking.hostName = "wsl";
 }
