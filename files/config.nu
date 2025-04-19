@@ -53,4 +53,10 @@ alias wg = winget.exe
 alias wgi = winget.exe install
 alias wgs = winget.exe search
 
-alias nrbs = sudo nixos-rebuild switch --flake path:($env.ENIX_FLAKE_PATH)#($host) # this shows as a comment, but that's just syntax highlighting - nushell comments need a space first
+alias nrbsh = sudo nixos-rebuild switch --flake path:($env.ENIX_FLAKE_PATH)#($host)
+alias nrbs = sudo nixos-rebuild switch --flake path:($env.ENIX_FLAKE_PATH)
+alias nrb = sudo nixos-rebuild switch
+
+def nrbs-remote [ssh_host target_host --use-remote-sudo=true] {
+    nixos-rebuild switch --flake path:($env.ENIX_FLAKE_PATH)#($target_host) --target-host ($ssh_host) --use-remote-sudo
+}

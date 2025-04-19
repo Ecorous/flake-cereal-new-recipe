@@ -49,7 +49,7 @@
 
   home.file = {
     "lycorecowallpaper.png".source = ../files/lycorecowallpaper.png;
-    ".ssh/authorized_keys".source = ../files/authorized_keys;
+    # ".ssh/authorized_keys".source = ../files/authorized_keys;
     ".ssh/auth.pub".source = ../files/auth.pub;
   };
 }
