@@ -40,7 +40,7 @@
     nushell = {
       enable = true;
       configFile.source = ../files/nushell/config.nu;
-    }
+    };
   };
   
   services = {
