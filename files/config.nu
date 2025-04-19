@@ -73,8 +73,10 @@ alias wgi = winget.exe install
 alias wgs = winget.exe search
 
 # alias nixos = sudo nixos-rebuild switch --flake path:($env.ENIX_FLAKE_PATH)#($host)
-alias nrb = sudo nixos-rebuild
+alias snrb = sudo nixos-rebuild
+alias nrb = nixos-rebuild
 alias nrbf = nrb switch --flake 
+alias snrbf = snrb switch --flake
 
 def nrbs-remote [target --ssh-host="placeholder" (-r) --sudo=true (-s)] {
     if ($ssh_host == "placeholder") {

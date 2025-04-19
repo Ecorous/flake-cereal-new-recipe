@@ -39,7 +39,7 @@
     };
     nushell = {
       enable = true;
-      configFile.source = ../files/nushell/config.nu;
+      configFile.source = ../files/config.nu;
     };
   };
   
