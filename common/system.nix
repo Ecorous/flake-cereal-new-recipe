@@ -19,6 +19,12 @@
     keyMap = "uk";
   };
 
+  environment.sessionVariables = {
+    EDITOR = "hx";
+    VISUAL = "hx";
+    
+  };
+
   environment.systemPackages = with pkgs; [
     nushell
     helix

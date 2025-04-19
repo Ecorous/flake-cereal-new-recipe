@@ -60,3 +60,9 @@ alias nrb = sudo nixos-rebuild switch
 def nrbs-remote [ssh_host target_host --use-remote-sudo=true] {
     nixos-rebuild switch --flake path:($env.ENIX_FLAKE_PATH)#($target_host) --target-host ($ssh_host) --use-remote-sudo
 }
+
+alias brctl = brightnessctl
+
+def brctl_percentage [] {
+    (brctl g | into int) / (brctl m | into int) * 100 | math round
+}
