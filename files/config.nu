@@ -40,25 +40,148 @@ let os_name = (sys host | get name | str downcase)
 let os_long_version = (sys host | get long_os_version | str downcase)
 let os_kernel = (sys host | get kernel_version | str downcase)
 
+let windows = $os_name | str contains "windows"
+let linux = ($os_long_version | str contains "linux") or ($os_name | str contains "linux")
+let wsl = ($os_kernel | str contains "microsoft") and $linux
 
-if ($os_name | str contains "Windows") {
-    $env.ENIX_FLAKE_PATH = $"C:/Users/(whoami)/Projects/flake-cereal-new-recipe"
-} else if (($os_kernel | str contains "microsoft") and ($os_long_version | str contains "linux")) { # wsl2
-    $env.ENIX_FLAKE_PATH = $"/mnt/c/Users/(whoami)/Projects/flake-cereal-new-recipe"
-} else if ($os_name | str contains "Linux") {
-    $env.ENIX_FLAKE_PATH = "/flake-cereal-new-recipe"
+let proj = "flake-cereal-new-recipe"
+
+if ($windows) {
+    $env.ENIX_FLAKE_PATH = $"C:/Users/(whoami)/Projects/($proj)"
+} else if ($wsl) {
+    $env.ENIX_FLAKE_PATH = $"/mnt/c/Users/(whoami)/Projects/($proj)"
+} else if ($linux) {
+    $env.ENIX_FLAKE_PATH = $"/($proj)"
+} else {
+    panic "???"
 }
+
+let flake_path = $env.ENIX_FLAKE_PATH
+# let nrb_path = $"path:($flake_path)#($host)"
+
+def nrb_path [ host2="" ] {
+    if ($host2 == "") {
+        return $"path:($flake_path)#($host)"
+    } else {
+        return $"path:($flake_path)#($host2)"
+    }
+} 
+
 
 alias wg = winget.exe
 alias wgi = winget.exe install
 alias wgs = winget.exe search
 
-alias nrbsh = sudo nixos-rebuild switch --flake path:($env.ENIX_FLAKE_PATH)#($host)
-alias nrbs = sudo nixos-rebuild switch --flake path:($env.ENIX_FLAKE_PATH)
-alias nrb = sudo nixos-rebuild switch
+# alias nixos = sudo nixos-rebuild switch --flake path:($env.ENIX_FLAKE_PATH)#($host)
+alias nrb = sudo nixos-rebuild
+alias nrbf = nrb switch --flake 
 
-def nrbs-remote [ssh_host target_host --use-remote-sudo=true] {
-    nixos-rebuild switch --flake path:($env.ENIX_FLAKE_PATH)#($target_host) --target-host ($ssh_host) --use-remote-sudo
+def nrbs-remote [target --ssh-host="placeholder" (-r) --sudo=true (-s)] {
+    if ($ssh_host == "placeholder") {
+        if ($sudo) {
+            nrbf (nrb_path $target) --target-host ($target) --use-remote-sudo
+        } else {
+            nrbf (nrb_path $target) --target-host ($target)
+        }
+    } else {
+        # nixos-rebuild switch --flake path:($env.ENIX_FLAKE_PATH)#($flake_name) --target-host ($ssh_host) --use-remote-sudo
+        if ($sudo) {
+            nrbf (nrb_path $target) --target-host ($ssh_host) --use-remote-sudo
+        } else {
+            nrbf (nrb_path $target) --target-host ($ssh_host)
+        }
+    }
+}
+
+def hn [name] {
+    $host | str contains $name
+}
+
+def "nixos juniper" [] {
+    if ($windows) {
+        print "warning: cannot build nixos on windows"
+        return
+    }
+    if (hn "juniper") { 
+        nixos localhost
+    } else {
+        nrbs-remote juniper
+    }
+}
+def "nixos elder" [] {
+    if ($windows) {
+        print "warning: cannot build nixos on windows"
+        return
+    }
+    if (hn "elder") {
+        nixos localhost
+    } else {
+        nrbs-remote elder -r root@elder -s false
+    }
+}
+def "nixos wsl" [] {
+    if ($windows) {
+        print "warning: cannot build nixos on windows"
+        return
+    }
+    if (hn "wsl") {
+        nixos localhost
+    } else {
+        panic "We can't do WSL remotely."
+    }
+}
+def "nixos wsl-nixos" [] {
+    if ($windows) {
+        print "warning: cannot build nixos on windows"
+        return
+    }
+    nixos wsl
+}
+def "nixos yggdrasil" [] {
+    if ($windows) {
+        print "warning: cannot build nixos on windows"
+        return
+    }
+    if (hn "yggdrasil") {
+        nrbs
+    } else {
+        panic "just don't. please."
+    }
+}
+def "nixos localhost" [--host=""] {
+    if ($windows) {
+        print "warning: cannot build nixos on windows"
+        return
+    }
+    nrbf (nrb_path)
+}
+
+def "nixos all" [] {
+    if ($windows) {
+        print "warning: cannot build nixos on windows"
+        return
+    }
+    if (hn "wsl") {
+        print "warning: yggdrasil won't be rebuilt - won't be done remotely"
+        nixos localhost
+        nixos elder
+        nixos juniper
+    } else if (hn "yggdrasil") {
+        print "warning: wsl won't be rebuilt - cannot be done remotely"
+        nixos localhost
+        nixos elder
+        nixos juniper
+    } else {
+        print "warning: wsl won't be rebuilt - cannot be done remotely"
+        print "warning: yggdrasil won't be rebuilt - not doing remotely"
+        nixos elder
+        nixos juniper
+    }
+}
+
+def nixos [] { 
+    print "You must use one of the following subcommands. Using this command as-is will only produce this help message.\n"
+    help nixos
 }
 
 alias brctl = brightnessctl

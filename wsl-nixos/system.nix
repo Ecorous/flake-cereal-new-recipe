@@ -11,6 +11,7 @@
   wsl.useWindowsDriver = true; # Use OpenGL driver from Windows
   wsl.wslConf.user.default = "ecorous";
 
+  services.openssh.ports = [2222];
 
   networking.hostName = "wsl-nixos";
 }
