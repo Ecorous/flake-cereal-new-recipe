@@ -32,6 +32,13 @@
                     home-manager.nixosModules.home-manager ./yggdrasil/home-manager.nix
                 ];
             };
+            wsl = nixpkgs.lib.nixosSystem {
+                system = "x86_64-linux";
+                specialArgs = { inherit inputs; };
+                modules = [
+                    ./wsl/system.nix
+                ];
+            };
         };
     };
 }

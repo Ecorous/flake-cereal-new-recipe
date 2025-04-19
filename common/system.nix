@@ -44,7 +44,7 @@
   users.users.ecorous = {
     description = "Dawn";
     isNormalUser = true;
-    extraGroups = [ "wheel" ]; # TODO setup docker properly
+    extraGroups = [ "wheel" ];
     shell = pkgs.nushell;
   };
 
