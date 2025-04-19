@@ -37,7 +37,10 @@
         "gpg \"ssh\"".program = "${lib.getExe' pkgs._1password-gui "op-ssh-sign"}";
       };
     };
-    
+    nushell = {
+      enable = true;
+      configFile.source = ../files/nushell/config.nu;
+    }
   };
   
   services = {
