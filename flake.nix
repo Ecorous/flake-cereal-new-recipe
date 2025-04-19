@@ -5,8 +5,8 @@
         nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
         home-manager.url = "github:nix-community/home-manager";
         home-manager.inputs.nixpkgs.follows = "nixpkgs";
-        inputs.nix-ld.url = "github:Mic92/nix-ld";
-        inputs.nix-ld.inputs.nixpkgs.follows = "nixpkgs";
+        nix-ld.url = "github:Mic92/nix-ld";
+        nix-ld.inputs.nixpkgs.follows = "nixpkgs";
         nixos-wsl.url = "github:nix-community/NixOS-WSL/main";
     };
 
