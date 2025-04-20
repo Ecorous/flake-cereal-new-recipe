@@ -7,6 +7,7 @@
     ../common/docker.nix
     ../common/virtualisation.nix
     ./network.nix
+    ./caddy.nix
   ];
 
   boot.loader.systemd-boot.enable = false;

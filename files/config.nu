@@ -155,7 +155,7 @@ def "nixos localhost" [--host=""] {
         print "warning: cannot build nixos on windows"
         return
     }
-    nrbf (nrb_path)
+    snrbf (nrb_path)
 }
 
 def "nixos all" [] {
