@@ -13,6 +13,8 @@
   nixpkgs.config.allowUnfree = true;
   time.timeZone = "Europe/London";
 
+  networking.nameservers = lib.mkDefault [ "192.168.69.1" "192.168.1.242" "1.1.1.1" "1.0.0.1" ];
+
   nix.settings.trusted-users = [ "root" "ecorous" ];
 
   i18n.defaultLocale = "en_GB.UTF-8";
@@ -44,6 +46,9 @@
     parted
     usbutils
     pciutils
+    dig
+    nss_latest
+    nss_latest.tools
   ];
 
   users.defaultUserShell = pkgs.nushell;

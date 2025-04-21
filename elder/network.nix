@@ -2,7 +2,6 @@
 {
   networking = {
     hostName = "elder";
-
     bridges = {
       br0 = {
         interfaces = [ "eno1" ];

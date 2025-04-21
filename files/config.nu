@@ -36,6 +36,20 @@ $env.PROMPT_COMMAND = {||
     $path_segment | str replace --all (char path_sep) $"($separator_color)(char path_sep)($path_color)"
 }
 
+# Get last command display and put in a variable for further processing
+$env.config = ($env.config | upsert hooks {
+    display_output: {
+        tee {table | print} | $env.last = $in
+        # $env.last = $in
+        # $env.last | table
+    }
+})
+
+# retrieve last command output
+def last [] {
+  $env.last
+}
+
 let os_name = (sys host | get name | str downcase)
 let os_long_version = (sys host | get long_os_version | str downcase)
 let os_kernel = (sys host | get kernel_version | str downcase)
@@ -165,25 +179,41 @@ def "nixos all" [] {
     }
     if (hn "wsl") {
         print "warning: yggdrasil won't be rebuilt - won't be done remotely"
-        nixos localhost
-        nixos elder
-        nixos juniper
+        do -i {
+            nixos localhost
+            nixos elder
+            nixos juniper
+        }
     } else if (hn "yggdrasil") {
         print "warning: wsl won't be rebuilt - cannot be done remotely"
-        nixos localhost
-        nixos elder
-        nixos juniper
+        do -i {
+            nixos localhost
+            nixos elder
+            nixos juniper
+        }
     } else {
         print "warning: wsl won't be rebuilt - cannot be done remotely"
         print "warning: yggdrasil won't be rebuilt - not doing remotely"
-        nixos elder
-        nixos juniper
+        do -i {
+            nixos elder
+            nixos juniper
+        }
     }
 }
 
 def nixos [] { 
     print "You must use one of the following subcommands. Using this command as-is will only produce this help message.\n"
     help nixos
+}
+
+def upload [file: string, --to:string --path:string = "/smb/shared" ] {
+    mut realhost = $to;
+    if ($realhost == "elder") {
+        $realhost = "root@elder"
+    } else {
+        print $file $to $path
+    }
+    scp $file $"($realhost):($path)"
 }
 
 alias brctl = brightnessctl
