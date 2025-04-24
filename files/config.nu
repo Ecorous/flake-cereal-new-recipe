@@ -223,5 +223,6 @@ def brctl_percentage [] {
 }
 
 if ($host == "elder") {
+    print h
     alias update-www = cp -r /flake-cereal-new-recipe/files/www /srv/
 }
