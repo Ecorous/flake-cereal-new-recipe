@@ -221,3 +221,9 @@ alias brctl = brightnessctl
 def brctl_percentage [] {
     (brctl g | into int) / (brctl m | into int) * 100 | math round
 }
+
+if ($host == "elder") {
+    def update-www [] {
+        cp -r /flake-cereal-new-recipe/files/www /srv/
+    } 
+}
