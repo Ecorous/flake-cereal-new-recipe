@@ -176,7 +176,28 @@
         "1.1.1.1"
         "1.0.0.1"
       ];
-      address = [ "/elder.int/192.168.69.1" "/jellyfin.elder.int/192.168.69.1" "/jf.elder.int/192.168.69.1" "/yggdrasil.int/192.168.69.2" "/files.yggdrasil.int/192.168.69.2" "/raffle.int/192.168.69.3" "/win10.int/192.168.69.4" ];
+      address = [ 
+        "/elder.int/192.168.69.1"
+        "/elder.ex/192.168.1.242"
+        "/jellyfin.elder.int/192.168.69.1"
+        "/jellyfin.elder.ex/192.168.1.242"
+        "/jf.elder.int/192.168.69.1"
+        "/jf.elder.ex/192.168.1.242"
+        "/wol.elder.int/192.168.69.1"
+        "/wol.elder.ex/192.168.1.242"
+        "/jellystat.elder.int/192.168.69.1"
+        "/jellystat.elder.ex/192.168.1.242"
+
+        "/yggdrasil.int/192.168.69.2"
+        "/yggdrasil.ex/192.168.1.124"
+        "/files.yggdrasil.int/192.168.69.2"
+        "/files.yggdrasil.ex/192.168.1.124"
+
+        "/raffle.int/192.168.69.3"
+        "/raffle.ex/192.168.1.81"
+
+        "/win10.int/192.168.69.4"
+      ];
       enable-tftp = true;
       tftp-root = "/srv/tftp";
       dhcp-boot = "netboot.xyz.kpxe";

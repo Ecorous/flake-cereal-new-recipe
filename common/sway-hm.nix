@@ -13,6 +13,39 @@
         effect-blur = "50x10";
       };
     };
+    waybar = {
+      enable = true;
+      settings = {
+        main = {
+          modules-left = [ "sway/workspaces" ];
+          modules-center = [ "sway/window" ];
+          modules-right = [ "backlight" "battery" "clock" "tray" ];
+
+          "sway/workspaces" = {
+            format = "{name}";
+            all-outputs = true;
+          };
+          "sway/window" = {
+            format = "{title}";
+            max-length = 50;
+          };
+          backlight = {
+            display = "intel_backlight";
+            format = "{percent}%";
+          };
+          battery = {
+            weighted-average = true;
+          };
+          clock = {
+            interval = 1;
+            format = "{:%F %T}";
+          };
+          tray = {
+            show-passive-icons = true;
+          };
+        };
+      };
+    };
     ghostty.settings.background-opacity = 0.4;
   };
 
@@ -34,19 +67,20 @@
           natural_scroll = "enabled";
         };
       };
-      bars = [{
-        position = "top";
-        statusCommand = "while date +[$(cat /sys/class/power_supply/BAT0/capacity)%]' [%Y-%m-%d %X]'; do sleep 1; done";
-        colors = {
-          statusline = "#ffffffff";
-          background = "#323232ff";
-          inactiveWorkspace = {
-            background = "#323232aa";
-            border = "#323232aa";
-            text = "#5c5c5caa";
-          };
-        };
-      }];
+      bars = [];
+      # bars = [{
+      #   position = "top";
+      #   statusCommand = "while date +[$(cat /sys/class/power_supply/BAT0/capacity)%]' [%Y-%m-%d %X]'; do sleep 1; done";
+      #   colors = {
+      #     statusline = "#ffffffff";
+      #     background = "#323232ff";
+      #     inactiveWorkspace = {
+      #       background = "#323232aa";
+      #       border = "#323232aa";
+      #       text = "#5c5c5caa";
+      #     };
+      #   };
+      # }];
       keybindings = lib.mkOptionDefault {
         "Mod4+l" = "exec ${pkgs.swaylock-effects}/bin/swaylock";
         # "--locked XF86MonBrightnessDown" = "exec ${pkgs.brightnessctl}/bin/brightnessctl set 1-";
@@ -64,6 +98,7 @@
     corner_radius 5
     default_dim_inactive 0.25
     
+    exec waybar
     exec mako
     exec ghostty'';
     package = null;

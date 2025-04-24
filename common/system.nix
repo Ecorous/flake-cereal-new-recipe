@@ -49,6 +49,7 @@
     dig
     nss_latest
     nss_latest.tools
+    wakeonlan
   ];
 
   users.defaultUserShell = pkgs.nushell;
