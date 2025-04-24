@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Internal Network Services</title>
+    <link rel="stylesheet" href="css/index.css">
+</head>
+<script src="js/index.js"></script>
+
+<body onload="js_load()">
+    <h1>Network Services</h1>
+    <div id="switchDiv">
+        <p>Internal/External</p>
+        <label class="switch"">
+            <input id="switch" oninput="switchClick()" type="checkbox">
+            <span class="slider round"></span>
+        </label>
+    </div>
+    <p></p>
+    <p></p>
+    <a href="http://jellyfin.elder.int" id="jellyfin" class="link">Jellyfin</a>
+    <p></p>
+    <a href="http://wol.elder.int" id="wol" class="link">WOL (Wake-On-LAN) Dashboard</a>
+    <p></p>
+    <a href="http://jellystat.elder.int" id="jellystat" class="link">Jellystat</a>
+    <p></p>
+    <a href="http://files.yggdrasil.int" id="files-yggdrasil" class="link">Yggdrasil Files</a>
+</body>
+
+</html>
