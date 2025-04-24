@@ -227,4 +227,7 @@ print $host == "elder"
 if ($host == "elder") {
     print h
     alias update-www = cp -r /flake-cereal-new-recipe/files/www /srv/
+    def update-www2 [] {
+        cp -r /flake-cereal-new-recipe/files/www /srv/
+    }
 }
