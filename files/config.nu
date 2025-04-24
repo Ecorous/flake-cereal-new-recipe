@@ -222,6 +222,8 @@ def brctl_percentage [] {
     (brctl g | into int) / (brctl m | into int) * 100 | math round
 }
 
+print $host == elder
+print $host == "elder"
 if ($host == "elder") {
     print h
     alias update-www = cp -r /flake-cereal-new-recipe/files/www /srv/
