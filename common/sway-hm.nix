@@ -99,18 +99,37 @@
     default_dim_inactive 0.25
     
     exec waybar
-    exec mako
-    exec ghostty'';
+    exec mako'';
     package = null;
   };
   services.mako = {
     enable = true;
-    borderRadius = 7;
-    defaultTimeout = 6000;
-    layer = "overlay";
-    extraConfig = '' 
-    icon-border-radius=15
-    '';
+    settings = {
+      max-visible = 5;
+      max-history = 5;
+      sort = "-time";
+      layer = "overlay";
+      anchor = "top-right";
+      font = "monospace 10";
+      background-color = "#285577ff";
+      text-color = "#ffffffff";
+      width = 300;
+      height = 100;
+      margin = 10;
+      padding = 5;
+      border-size = 1;
+      border-color = "#4c7899ff";
+      border-radius = 7;
+      progress-color = "over #5588aaff";
+      icons = true;
+      max-icon-size = 64;
+      markup = true;
+      actions = true;
+      format = "<b>%s</b>\n%b";
+      default-timeout = 6000;
+      ignore-inactive = false;
+      icon-border-radius = 15;
+    };
   };
   programs.fuzzel = {
     enable = true;

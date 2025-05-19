@@ -60,8 +60,45 @@ let wsl = ($os_kernel | str contains "microsoft") and $linux
 
 let proj = "flake-cereal-new-recipe"
 
+use std "path add"
+
 if ($windows) {
     $env.ENIX_FLAKE_PATH = $"C:/Users/(whoami)/Projects/($proj)"
+    let carapace_completer = {|spans: list<string>|
+        carapace $spans.0 nushell ...$spans
+        | from json
+        | if ($in | default [] | where value =~ '^-.*ERR$' | is-empty) { $in } else { null }
+    }
+    let external_completer = {|spans|
+    let expanded_alias = scope aliases
+    | where name == $spans.0
+    | get -i 0.expansion
+
+    let spans = if $expanded_alias != null {
+        $spans
+        | skip 1
+        | prepend ($expanded_alias | split row ' ' | take 1)
+    } else {
+        $spans
+    }
+
+    match $spans.0 {
+            # carapace completions are incorrect for nu
+            # nu => $fish_completer
+            # fish completes commits and branch names in a nicer way
+            # git => $fish_completer
+            # carapace doesn't have completions for asdf
+            # asdf => $fish_completer
+            # use zoxide completions for zoxide commands
+            # __zoxide_z | __zoxide_zi => $zoxide_completer
+            _ => $carapace_completer
+        } | do $in $spans
+    }
+    $env.config.completions.external = {
+        enable: true,
+        completer: $external_completer,
+    };
+
 } else if ($wsl) {
     $env.ENIX_FLAKE_PATH = $"/mnt/c/Users/(whoami)/Projects/($proj)"
 } else if ($linux) {
@@ -69,6 +106,8 @@ if ($windows) {
 } else {
     panic "???"
 }
+
+path add ~/.deno/bin
 
 let flake_path = $env.ENIX_FLAKE_PATH
 # let nrb_path = $"path:($flake_path)#($host)"
@@ -222,12 +261,35 @@ def brctl_percentage [] {
     (brctl g | into int) / (brctl m | into int) * 100 | math round
 }
 
-print $host == elder
-print $host == "elder"
+# print $host == elder
+# print $host == "elder"
 if ($host == "elder") {
-    print h
-    alias update-www = cp -r /flake-cereal-new-recipe/files/www /srv/
-    def update-www2 [] {
-        cp -r /flake-cereal-new-recipe/files/www /srv/
+    # print h
+
+    "alias update-www = cp -r /flake-cereal-new-recipe/files/www /srv/" | save -f /tmp/update-www.nu
+    # source /tmp/update-www.nu
+}
+
+
+def "update-www" [] {
+    do { cd /flake-cereal-new-recipe; git pull /flake-cereal-new-recipe }
+    cp -r /flake-cereal-new-recipe/files/www /srv/www
+}
+if ($host != "elder") { hide update-www }
+
+
+def portforward [ --local-port(-l): int --remote-address(-r): string --expose(-e)=true --host(-h)="localhost" ] {
+
+    let nu_cmd = "nu -c \"print \"listening.. press ctrl+c to exit\"; sleep (999wk * 100)\""
+    if ($local_port == null) {
+        error make {msg: "flag --local-port (-l) is required"}
+    }
+    if ($remote_address == null) {
+        error make {msg: "flag --remote-address (-r) is required"}
+    }
+    if ($expose) {
+        print "notice: exposing this port on all interfaces (this is perfectly normal)"
+    } else {
+        ssh -v -L $"127.0.0.1:($local_port):($remote_address)" $host $nu_cmd
     }
 }

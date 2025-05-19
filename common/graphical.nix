@@ -15,18 +15,19 @@
     firefox
     vesktop
     element-desktop
-    beeper
+    # beeper
     signal-desktop
     kdePackages.dolphin
     vscode-fhs
     mpv
     jellyfin-mpv-shim
     finamp
-    flameshot
+    (flameshot.override { enableWlrSupport = true; })
     localsend
     thunderbird-latest-unwrapped
     moonlight-qt
     pwvucontrol
+    openrgb
   ];
 
   services.xserver.xkb.layout = "gb";

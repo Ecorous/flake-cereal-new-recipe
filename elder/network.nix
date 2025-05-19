@@ -2,6 +2,15 @@
 {
   networking = {
     hostName = "elder";
+
+    wireless.iwd = {
+      enable = true;
+      settings = {
+        Settings.AutoConnect = true;
+      };
+    };
+    networkmanager.wifi.backend = "iwd";
+
     bridges = {
       br0 = {
         interfaces = [ "eno1" ];
@@ -10,13 +19,13 @@
 
     nat = {
       enable = true;
-      externalInterface = "wlp0s26u1u2";
+      externalInterface = "wlan0";
       internalInterfaces = [ "br0" ];
       internalIPs = [ "192.168.69.0/24" ];
     };
     
     interfaces = {
-      "wlp0s26u1u2" = {
+      "wlan0" = {
         useDHCP = true;
         tempAddress = "disabled";
       };
@@ -29,10 +38,10 @@
 
   services.hostapd = {
     enable = false;
-    radios.wlp0s26u1u2 = {
+    radios.wlan0 = {
       # band = "5g";
       # channel = 36;
-      networks.wlp0s26u1u2 = {
+      networks.wlan0 = {
         ssid = "crotchgoblins";
         authentication.mode = "wpa2-sha256";
         # authentication.wpaPassword = builtins.readFile ./passphrase;
@@ -41,7 +50,7 @@
   };
 
   #   interfaces = {
-  #     wlp0s26u1u2.useDHCP = true;
+  #     wlan0.useDHCP = true;
   #     eno1.useDHCP = false;
 
   #     eno1 = {
@@ -61,7 +70,7 @@
   #       # enable flow offloading for better throughput
   #       flowtable f {
   #         hook ingress priority 0;
-  #         devices = { wlp0s26u1u2, eno1 };
+  #         devices = { wlan0, eno1 };
   #       }
 
   #       chain output {
@@ -77,8 +86,8 @@
   #         } counter accept
 
   #         # Allow returning traffic from ppp0 and drop everthing else
-  #         iifname "wlp0s26u1u2" ct state { established, related } counter accept
-  #         iifname "wlp0s26u1u2" drop
+  #         iifname "wlan0" ct state { established, related } counter accept
+  #         iifname "wlan0" drop
   #       }
 
   #       chain forward {
@@ -87,16 +96,16 @@
   #         # enable flow offloading for better throughput
   #         ip protocol { tcp, udp } flow offload @f
 
-  #         # Allow trusted network wlp0s26u1u2 access
+  #         # Allow trusted network wlan0 access
   #         iifname {
   #                 "eno1",
   #         } oifname {
-  #                 "wlp0s26u1u2",
-  #         } counter accept comment "Allow trusted eno1 to wlp0s26u1u2"
+  #                 "wlan0",
+  #         } counter accept comment "Allow trusted eno1 to wlan0"
 
-  #         # Allow established wlp0s26u1u2 to return
+  #         # Allow established wlan0 to return
   #         iifname {
-  #                 "wlp0s26u1u2",
+  #                 "wlan0",
   #         } oifname {
   #                 "eno1",
   #         } ct state established,related counter accept comment "Allow established back to eno1s"
@@ -111,7 +120,7 @@
   #       # Setup NAT masquerading on the ppp0 interface
   #       chain postrouting {
   #         type nat hook postrouting priority filter; policy accept;
-  #         oifname "wlp0s26u1u2" masquerade
+  #         oifname "wlan0" masquerade
   #       }
   #     }
   #   '';
