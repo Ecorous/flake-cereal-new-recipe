@@ -97,9 +97,23 @@
     blur_xray enable
     corner_radius 5
     default_dim_inactive 0.25
-    
+
+    for_window {
+      [app_id=".blueman-manager-wrapped"] move to workspace 10
+      [app_id="com.mitchellh.ghostty"] move to workspace 1
+      [class="vesktop"] move to workspace 2
+      [class="Signal"] move to workspace 4
+      [class="Element"] move to workspace 5
+    }
+   
     exec waybar
-    exec mako'';
+    exec mako
+    exec blueman-manager
+    exec vesktop
+    exec signal-desktop
+    exec element-desktop
+    exec ghostty
+    exec swaymsg workspace 1'';
     package = null;
   };
   services.mako = {
@@ -125,9 +139,8 @@
       max-icon-size = 64;
       markup = true;
       actions = true;
-      format = "<b>%s</b>\n%b";
+      format = "<b>%s</b>\\n%b";
       default-timeout = 6000;
-      ignore-inactive = false;
       icon-border-radius = 15;
     };
   };

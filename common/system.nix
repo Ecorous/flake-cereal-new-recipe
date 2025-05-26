@@ -50,6 +50,10 @@
     nss_latest
     nss_latest.tools
     wakeonlan 
+    libnotify
+    psmisc
+    feh
+    carapace
   ];
 
   users.defaultUserShell = pkgs.nushell;

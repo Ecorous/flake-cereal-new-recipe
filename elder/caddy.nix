@@ -38,6 +38,13 @@
           reverse_proxy localhost:3000
         '';
       };
+      "http://files.elder.int" = {
+        serverAliases = [ "https://files.elder.int" "http://files.elder.ext" "https://files.elder.ext" ];
+        extraConfig = ''
+          root /srv/public
+          file_server  
+        '';
+      };
       "http://elder.int" = {
         serverAliases = [ "https://elder.int" "http://elder.ext" "https://elder.ext" ];
         extraConfig = ''

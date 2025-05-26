@@ -4,7 +4,8 @@
   imports = [
     ./hardware.nix
     ../common/system.nix 
-    ../common/sway.nix
+    # ../common/sway.nix
+    ../common/plasma.nix
     ../common/bluetooth.nix
 
   ];

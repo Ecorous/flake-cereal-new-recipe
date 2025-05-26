@@ -54,7 +54,7 @@
   services.udisks2.enable = true;
 
   services.cjdns = {
-    enable = true;
+    enable = false;
     authorizedPasswords = [ "faggot" ];
     UDPInterface.bind = "0.0.0.0:33808";
   };

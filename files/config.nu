@@ -64,41 +64,6 @@ use std "path add"
 
 if ($windows) {
     $env.ENIX_FLAKE_PATH = $"C:/Users/(whoami)/Projects/($proj)"
-    let carapace_completer = {|spans: list<string>|
-        carapace $spans.0 nushell ...$spans
-        | from json
-        | if ($in | default [] | where value =~ '^-.*ERR$' | is-empty) { $in } else { null }
-    }
-    let external_completer = {|spans|
-    let expanded_alias = scope aliases
-    | where name == $spans.0
-    | get -i 0.expansion
-
-    let spans = if $expanded_alias != null {
-        $spans
-        | skip 1
-        | prepend ($expanded_alias | split row ' ' | take 1)
-    } else {
-        $spans
-    }
-
-    match $spans.0 {
-            # carapace completions are incorrect for nu
-            # nu => $fish_completer
-            # fish completes commits and branch names in a nicer way
-            # git => $fish_completer
-            # carapace doesn't have completions for asdf
-            # asdf => $fish_completer
-            # use zoxide completions for zoxide commands
-            # __zoxide_z | __zoxide_zi => $zoxide_completer
-            _ => $carapace_completer
-        } | do $in $spans
-    }
-    $env.config.completions.external = {
-        enable: true,
-        completer: $external_completer,
-    };
-
 } else if ($wsl) {
     $env.ENIX_FLAKE_PATH = $"/mnt/c/Users/(whoami)/Projects/($proj)"
 } else if ($linux) {
@@ -120,6 +85,8 @@ def nrb_path [ host2="" ] {
     }
 } 
 
+alias gc = git commit -S -a -m
+alias g = git
 
 alias wg = winget.exe
 alias wgi = winget.exe install
@@ -291,5 +258,83 @@ def portforward [ --local-port(-l): int --remote-address(-r): string --expose(-e
         print "notice: exposing this port on all interfaces (this is perfectly normal)"
     } else {
         ssh -v -L $"127.0.0.1:($local_port):($remote_address)" $host $nu_cmd
+    }
+}
+
+
+
+    
+let carapace_completer = {|spans: list<string>|
+    carapace $spans.0 nushell ...$spans
+    | from json
+    | if ($in | default [] | where value =~ '^-.*ERR$' | is-empty) { $in } else { null }
+}
+let external_completer = {|spans|
+    let expanded_alias = scope aliases
+    | where name == $spans.0
+    | get -i 0.expansion
+
+    let spans = if $expanded_alias != null {
+        $spans
+        | skip 1
+        | prepend ($expanded_alias | split row ' ' | take 1)
+    } else {
+        $spans
+    }
+
+    match $spans.0 {
+        # carapace completions are incorrect for nu
+        # nu => $fish_completer
+        # fish completes commits and branch names in a nicer way
+        # git => $fish_completer
+        # carapace doesn't have completions for asdf
+        # asdf => $fish_completer
+        # use zoxide completions for zoxide commands
+        # __zoxide_z | __zoxide_zi => $zoxide_completer
+        _ => $carapace_completer
+    } | do $in $spans
+}
+$env.config.completions.external = {
+    enable: true,
+    completer: $external_completer,
+};
+
+export-env {
+    def fnm-env [] {
+        let vars = (
+            fnm env --shell bash
+            | str replace -a 'export ' ''
+            | str replace -a '"' ''
+            | lines
+            | split column '='
+            | rename name value
+            | reduce -f {} {|it, acc| $acc | upsert $it.name $it.value }
+        )
+
+        let fnm_path = ($vars.PATH | str replace ":$PATH" "")
+        $vars | upsert PATH ($env.PATH | prepend $fnm_path)
+    }
+
+    if not (which fnm | is-empty) {
+        fnm-env | load-env
+
+        if (not ($env | default false __fnm_hooked | get __fnm_hooked)) {
+            $env.__fnm_hooked = true
+
+            # $env.config = (
+                # $env.config | default {} | upsert hooks (
+                    # $env.config.hooks | default {} | upsert env_change (
+                        # $env.config.hooks.env_change | default {} | upsert PWD (
+                            # ($env.config.hooks.env_change.PWD | default []) ++ [{
+                            #     |before, after|
+                            #     if ([.nvmrc .node-version] | path exists | any { |it| $it }) {
+                            #         fnm use
+                            #     }
+                            # }]
+                        # )
+                    # )
+                # )
+            # )
+        }
     }
 }

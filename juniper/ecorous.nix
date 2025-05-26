@@ -2,7 +2,7 @@
 {
   imports = [
     ../common/ecorous.nix
-    ../common/sway-hm.nix
+    # ../common/sway-hm.nix
   ];
 
   home.file."scripts/brightness_down.sh".source = ../files/brightness_down.sh;
@@ -13,4 +13,6 @@
   home.file."scripts/brightness_set_1.sh".executable = true;
   home.file."scripts/brightness_toggle.nu".source = ../files/brightness_toggle.nu;
   home.file."scripts/brightness_toggle.nu".executable = true;
+  home.file."scripts/sway_workspaces.sh".source = ../files/sway_workspaces.sh;
+  home.file."scripts/sway_workspaces.sh".executable = true;
 }
