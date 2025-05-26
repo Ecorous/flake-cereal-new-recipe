@@ -50,6 +50,27 @@ def last [] {
   $env.last
 }
 
+def exists [command: string] {
+    if ($command == "") {
+        error make {msg: "command cannot be empty"}
+    }
+    if ($command | str contains " ") {
+        error make {msg: "command cannot contain spaces"}
+    }
+    if ($command | str contains "/") {
+        error make {msg: "command cannot contain slashes"}
+    }
+    if ($command | str contains "\\") {
+        error make {msg: "command cannot contain backslashes"}
+    }
+    if (which $command | is-empty) {
+        return false
+    } else {
+        return true
+    }
+}
+
+
 let os_name = (sys host | get name | str downcase)
 let os_long_version = (sys host | get long_os_version | str downcase)
 let os_kernel = (sys host | get kernel_version | str downcase)
