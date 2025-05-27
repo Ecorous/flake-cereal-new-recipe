@@ -9,18 +9,18 @@
   boot.extraModulePackages = [ ];
 
   fileSystems."/" = {
-    device = "/dev/disk/by-label/juniperRoot"; # FIXME - I don't know what this is yet - need to investigate with a proper live usb. this is just a draft
+    device = "/dev/disk/by-label/juniperRoot";
     fsType = "ext4";
   };
 
   fileSystems."/boot" = {
-    device = "/dev/disk/by-label/juniperBoot"; # FIXME - same as above
+    device = "/dev/disk/by-label/juniperBoot"; 
     fsType = "vfat";
     options = [ "fmask=0022" "dmask=0022" ];
   };
 
   swapDevices = [{
-    label = "linuxswap";
+    label = "juniperSwap";
   }];
 
   networking.useDHCP = lib.mkDefault true;
