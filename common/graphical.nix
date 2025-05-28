@@ -28,6 +28,7 @@
     moonlight-qt
     pwvucontrol
     openrgb
+    onlyoffice-desktopeditors
   ];
 
   services.xserver.xkb.layout = "gb";

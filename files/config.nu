@@ -10,13 +10,16 @@ $env.PROMPT_COMMAND = {||
     }
 
     let user = (whoami | str downcase)
-    
-
     let path_color = (if (is-admin) { ansi red_bold } else { ansi green_bold })
     let separator_color = (if (is-admin) { ansi light_red_bold } else { ansi light_green_bold })
-    let path_segment = $"($path_color)($user)@($host) ($dir)(ansi reset)"
+    let ssh = if "SSH_CONNECTION" in $env { "(ssh) " } else "" 
+    let path_segment = $"($path_color)($ssh)($user)@($host) ($dir)(ansi reset)"
 
     $path_segment | str replace --all (char path_sep) $"($separator_color)(char path_sep)($path_color)"
+}
+
+def "remove_old_kernels" [--duration: duration = 8wk] {
+   ls /boot/kernels | where modified <= (date now) - $duration | each { rm -f $in.name } 
 }
 
 # Get last command display and put in a variable for further processing

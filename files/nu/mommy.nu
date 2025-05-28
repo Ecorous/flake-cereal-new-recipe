@@ -1,78 +1,7 @@
-# $env.MOMMY_CAREGIVER = "mommy"
-# $env.MOMMY_PRONOUNS = ["she" "her" "hers" "herself"]
-# $env.MOMMY_LITTLE = "girl"
-# $env.MOMMY_PREFIX = ""
-# $env.MOMMY_SUFFIX = "~"
-# $env.MOMMY_CAPITALIZE = false
-# $env.MOMMY_COMPLIMENTS = [
-#     # generic~
-#     "*pats your head*"
-#     # good X~
-#     "good $little"
-#     "good job, my $little"
-#     "that's a good $little"
-#     "who's my good $little"
-#     # proud~
-#     "$caregiver is very proud of you"
-#     "$caregiver is so proud of you"
-#     "$caregiver knew you could do it"
-#     "$caregiver loves you, you are doing amazing"
-#     # compliment~
-#     "$caregiver's $little is so smart"
-#     # reward~
-#     "$caregiver thinks you deserve a special treat for that"
-#     "my little $little deserves a big fat kiss for that"
-# ]
-# $env.MOMMY_COMPLIMENTS_EXTRA = []
-# $env.MOMMY_COMPLIMENTS_ENABLED = true
-# $env.MOMMY_ENCOURAGEMENTS = [
-#     # trust~
-#     "$caregiver believes in you"
-#     "$caregiver knows you'll get there"
-#     "$caregiver knows $their little $little can do better"
-#     "just know that $caregiver still loves you"
-#     "$caregiver knows you're doing your best"
-#     # consolation~
-#     "don't worry, it'll be alright"
-#     "it's okay to make mistakes"
-#     "$caregiver knows it's hard, but it will be okay"
-#     # fallback~
-#     "$caregiver is always here for you"
-#     "$caregiver is always here for you if you need $them"
-#     "come here, sit on my lap while we figure this out together"
-#     # encouragement~
-#     "never give up, my love"
-#     "just a little further, $caregiver knows you can do it"
-#     "$caregiver knows you'll get there, don't worry about it"
-
-#     # clean up~
-#     "did $caregiver's $little make a big mess"
-# ]
-# $env.MOMMY_ENCOURAGEMENTS_EXTRA = []
-# $env.MOMMY_ENCOURAGEMENTS_ENABLED = true
-# $env.MOMMY_IGNORED_STATUS_CODES = [138]
-# $env.MOMMY_COLOUR = (ansi plum2)
-
 if (not (("~/.mommy.nuon" | path exists) and ("~/.mommy.nuon" | path type | $in == "file"))) {
     mommy defaults
 } 
 let mommy: record = (open ~/.mommy.nuon)
-
-
-# let mommy: record = {
-#     caregiver: $env.MOMMY_CAREGIVER,
-#     pronouns: $env.MOMMY_PRONOUNS,
-#     little: $env.MOMMY_LITTLE,
-#     prefix: $env.MOMMY_PREFIX,
-#     suffix: $env.MOMMY_SUFFIX,
-#     capitalize: $env.MOMMY_CAPITALIZE,
-#     compliments: ($env.MOMMY_COMPLIMENTS | append $env.MOMMY_COMPLIMENTS_EXTRA),
-#     compliments_enabled: $env.MOMMY_COMPLIMENTS_ENABLED,
-#     encouragements: ($env.MOMMY_ENCOURAGEMENTS | append $env.MOMMY_ENCOURAGEMENTS_EXTRA),
-#     encouragements_enabled: $env.MOMMY_ENCOURAGEMENTS_ENABLED,
-#     ignored_status_codes: $env.MOMMY_IGNORED_STATUS_CODES,
-#     colour: $env.MOMMY_COLOUR,
-# }
 
 def mommy_util_capitalize [text: string] {
     if $mommy.capitalize {

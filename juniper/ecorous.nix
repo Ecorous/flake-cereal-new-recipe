@@ -18,4 +18,5 @@
 
   home.file.".config/nushell/autoload/juniper.nu".source = ../files/nu/juniper.nu;
   home.file.".config/nushell/mommy.nu".source = ../files/nu/mommy.nu;
+  home.file.".config/nushell/zerotier.nu".source = ../files/nu/zerotier.nu;
 }
