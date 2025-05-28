@@ -29,5 +29,4 @@
   qt.platformTheme = "qt5ct";
   environment.sessionVariables.GTK_THEME = "Breeze-Dark";
   environment.sessionVariables.MOZ_ENABLE_WAYLAND = 0;
-  
 }

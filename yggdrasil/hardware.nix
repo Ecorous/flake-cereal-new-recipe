@@ -1,6 +1,9 @@
 { config, lib, pkgs, modulesPath, ... }:
 
 {
+  # cpu: ryzen 5 5600x (as of 2025-02)
+  # gpu: gtx 1080 (as of ~2023-10?)
+  
   imports =
     [ (modulesPath + "/installer/scan/not-detected.nix")
     ];
