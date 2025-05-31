@@ -33,3 +33,6 @@ teknoasian.com###penci-post-entry-inner > ul
 ! 15 May 2025 https://www.thepinknews.com
 www.thepinknews.com##.svelte-k6qh1c.main
 
+linegee.net##.clearfix.entry > .entry-image
+linegee.net##.notopmargin.entry-content > p
+linegee.net##[src="http://teknoasian.com/ads/download.png"]
