@@ -1,0 +1,35 @@
+! 10 Apr 2025 https://time.is
+time.is###attention
+! 16 Apr 2025 https://teknoasian.com
+teknoasian.com##.penci-home-popular-posts.container
+teknoasian.com##.penci-layout-overlay-list
+teknoasian.com###sidebar > .theiaStickySidebar
+teknoasian.com##.menu-style-1.header-6.header-layout-bottom
+teknoasian.com##.verify.myButton
+teknoasian.com##.lazyloaded.penci-lazy.penci-footer-social-media
+teknoasian.com##p
+teknoasian.com##strong
+teknoasian.com##.penci-header-text-white.penci-single-style-8.container-single
+teknoasian.com##.penci-google-adsense-2
+teknoasian.com##.comments
+teknoasian.com##.single-breadcrumb.penci-breadcrumb.container
+teknoasian.com##.post-title-box
+teknoasian.com##.post-pagination
+teknoasian.com##.post-share.social-align-center.tags-share-box-2_3.tags-share-box-s3.single-post-share.tags-share-box
+teknoasian.com##.penci-comments-hide-1.post-comments
+teknoasian.com##.post-tags
+
+! 16 Apr 2025 https://hosttbuzz.com
+hosttbuzz.com##.inside-article
+hosttbuzz.com##.inside-right-sidebar
+hosttbuzz.com##.has-inline-mobile-toggle.site-header
+hosttbuzz.com##.footer-widgets.site
+hosttbuzz.com##.site-info
+
+! 20 Apr 2025 https://teknoasian.com
+teknoasian.com##h2
+teknoasian.com###penci-post-entry-inner > ul
+
+! 15 May 2025 https://www.thepinknews.com
+www.thepinknews.com##.svelte-k6qh1c.main
+
