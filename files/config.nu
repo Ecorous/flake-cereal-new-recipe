@@ -22,6 +22,14 @@ $env.PROMPT_COMMAND = {||
     $path_segment | str replace --all (char path_sep) $"($separator_color)(char path_sep)($path_color)"
 }
 
+$env.config.highlight_resolved_externals = true
+$env.config.color_config.shape_external = "light_red"
+$env.config.color_config.shape_external_resolved = "light_cyan_bold" 
+
+
+
+
+
 
 # -----------------------------------------------------------
 #  `last` command
@@ -36,6 +44,7 @@ $env.config = ($env.config | upsert hooks {
         tee {table | print} | $env.last = $in
     }
 })
+
 
 # retrieve last command output
 def last [] {
@@ -99,6 +108,33 @@ def forward [ --local-port(-l): int --remote-address(-r): string --expose(-e)=tr
     }
 }
 
+# -----------------------------------------------------------
+#  Zerotier commands
+# -----------------------------------------------------------
+
+def "zerotier networks" [] {
+    sudo zerotier-cli listnetworks -j 
+    | from json 
+    | select id name assignedAddresses status type
+    | rename id name addresses 
+    | each { |it|
+        $it
+        | upsert addresses ($it.addresses | to text)
+        | upsert status ($it.status | str downcase)
+        | upsert type ($it.type | str downcase)
+     }
+}
+
+def "zerotier join" [id: string] {
+    sudo zerotier-cli join -j $id
+    | from json
+    | select id name assignedAddresses status type
+    | rename id name addresses
+    | upsert addresses ($in.addresses | {ipv6: $in.0, ipv4: $in.1})
+    | upsert status ($in.status | str downcase)
+    | upsert type ($in.type | str downcase)
+}
+
 
 # -----------------------------------------------------------
 #  WSL commands
@@ -126,7 +162,7 @@ def "wsl default" [] {
 }
 
 def "wsl set-default" [name: string] {
-    if ($name == "") {
+    if ($name | is-empty) {
         error make {msg: "name cannot be empty"}
     }
     if (not (wsl exists $name)) {
@@ -143,10 +179,45 @@ def "wsl exists" [name: string = ""] {
     ($name | str downcase) in (wsl list | get name)
 }
 
-def "wsl run" [--distro(-d): string = "DEFAULT" command: closure] {
-    view source $command | wsl.exe -d  (if (($distro | str downcase) == "default") { wsl default } else { $distro }) -- nu -l -c $"do ($in)"
+def "wsl run" [
+    --distro(-d): string = "DEFAULT"
+    --forward-ssh-agent(-a)
+    --run-shell(-s)
+    command: closure
+    ] {
+    let distro_to_use = if ($distro == "DEFAULT") {
+        wsl default
+    } else {
+        if (not (wsl exists ($distro | str downcase) )) {
+            error make {msg: "distro '$distro' does not exist, please use 'wsl list' to see available distros."}
+        }
+        $distro | str downcase
+    }
+    mut job_id = -2048
+    if $forward_ssh_agent and ($distro_to_use == "nixos") { # forwarding is only setup properly for nixos
+        print "starting ssh agent forwarding for nixos distro"
+        $job_id = job spawn { ssh nixos.wsl -A -T "$env.SSH_AUTH_SOCK | save -f /tmp/ssh-agent-sock.txt; print \"started ssh forwarding\"; bash" }
+    }
+    if $run_shell {
+        wsl.exe -d $distro_to_use -- nu -l 
+    } else {
+        view source $command | wsl.exe -d  $distro_to_use -- nu -l -c $"do ($in)" 
+    }
+    
+    if $forward_ssh_agent and ($distro_to_use == "nixos") {
+        print "killing ssh agent forwarding job"
+        if ($job_id != -2048) {
+            if (job list | is-not-empty) {
+                if (job list | where id == $job_id | is-empty) {
+                    print "warning: job with id $job_id not found, maybe it finished already?"
+                } else {
+                    job list
+                    job kill $job_id
+                }
+            }
+        }
+    }
 }
-
 
 # -----------------------------------------------------------
 #  Variable setup
@@ -182,6 +253,21 @@ if ($windows) {
 
 let flake_path = $env.ENIX_FLAKE_PATH
 # let nrb_path = $"path:($flake_path)#($host)"
+
+# -----------------------------------------------------------
+#  WSL environment setup
+# -----------------------------------------------------------
+
+if $wsl and ("/tmp/ssh-agent-sock.txt" | path exists) {
+    let ssh_agent_sock = (open /tmp/ssh-agent-sock.txt | str trim)
+    if ($ssh_agent_sock != "") {
+        $env.SSH_AUTH_SOCK = $ssh_agent_sock
+        print "using ssh agent socket: $ssh_agent_sock"
+    } else {
+        print "warning: ssh agent socket is empty, not setting SSH_AUTH_SOCK"
+    }
+}
+
 
 # -----------------------------------------------------------
 # Path setup
