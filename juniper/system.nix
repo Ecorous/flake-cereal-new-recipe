@@ -10,8 +10,9 @@
 
   ];
 
-  environment.systemPackages = [
-    pkgs.nautilus
+  environment.systemPackages = with pkgs; [
+    nautilus
+    brightnessctl
   ];
 
   users.users.watch = {
@@ -19,7 +20,6 @@
     isNormalUser = true;
     shell = pkgs.nushell;
   };
-  # services.desktopManager.plasma6.enable = true; # we don't actually use this, just want the packages
 
 
   hardware.graphics.extraPackages = [ pkgs.intel-media-driver ];
