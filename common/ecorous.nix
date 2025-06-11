@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 {
   home.stateVersion = "24.11";
 
@@ -42,7 +47,7 @@
       configFile.source = ../files/config.nu;
     };
   };
-  
+
   services = {
     kdeconnect = {
       enable = true;

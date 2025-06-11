@@ -1,4 +1,11 @@
-{ lib, pkgs, fjordlauncher, inputs, inputs', ... }:
+{
+  lib,
+  pkgs,
+  fjordlauncher,
+  inputs,
+  inputs',
+  ...
+}:
 let
   inherit (pkgs.stdenv.hostPlatform) system;
 in
@@ -13,7 +20,9 @@ in
       "unmojang.cachix.org-1:OfHnbBNduZ6Smx9oNbLFbYyvOWSoxb2uPcnXPj4EDQY="
     ];
   };
-  environment.systemPackages = [ (inputs'.fjordlauncher.packages.fjordlauncher.override {
-    textToSpeechSupport = false;
-  }) ];
+  environment.systemPackages = [
+    (inputs'.fjordlauncher.packages.fjordlauncher.override {
+      textToSpeechSupport = false;
+    })
+  ];
 }

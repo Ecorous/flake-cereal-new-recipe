@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 {
   programs = {
     swaylock = {
@@ -19,7 +24,12 @@
         main = {
           modules-left = [ "sway/workspaces" ];
           modules-center = [ "sway/window" ];
-          modules-right = [ "backlight" "battery" "clock" "tray" ];
+          modules-right = [
+            "backlight"
+            "battery"
+            "clock"
+            "tray"
+          ];
 
           "sway/workspaces" = {
             format = "{name}";
@@ -49,13 +59,15 @@
     ghostty.settings.background-opacity = 0.4;
   };
 
-  wayland.windowManager.sway = { # FIXME this shouldn't be in global home-manager config. make a sway-hm file and import it additionally for each dsevice using the sway setup.
+  wayland.windowManager.sway = {
+    # FIXME this shouldn't be in global home-manager config. make a sway-hm file and import it additionally for each dsevice using the sway setup.
     enable = true;
     config = {
       menu = "fuzzel";
       modifier = "Mod4";
       terminal = "ghostty";
-      output."*".bg = "/run/current-system/sw/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png fill";
+      output."*".bg =
+        "/run/current-system/sw/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png fill";
       # output."*".bg = "~/lycorecowallpaper.png fill";
       input = {
         "type:keyboard" = {
@@ -67,7 +79,7 @@
           natural_scroll = "enabled";
         };
       };
-      bars = [];
+      bars = [ ];
       # bars = [{
       #   position = "top";
       #   statusCommand = "while date +[$(cat /sys/class/power_supply/BAT0/capacity)%]' [%Y-%m-%d %X]'; do sleep 1; done";
@@ -93,27 +105,27 @@
       };
     };
     extraConfig = ''
-    blur enable
-    blur_xray enable
-    corner_radius 5
-    default_dim_inactive 0.25
+      blur enable
+      blur_xray enable
+      corner_radius 5
+      default_dim_inactive 0.25
 
-    for_window {
-      [app_id=".blueman-manager-wrapped"] move to workspace 10
-      [app_id="com.mitchellh.ghostty"] move to workspace 1
-      [class="vesktop"] move to workspace 2
-      [class="Signal"] move to workspace 4
-      [class="Element"] move to workspace 5
-    }
-   
-    exec waybar
-    exec mako
-    exec blueman-manager
-    exec vesktop
-    exec signal-desktop
-    exec element-desktop
-    exec ghostty
-    exec swaymsg workspace 1'';
+      for_window {
+        [app_id=".blueman-manager-wrapped"] move to workspace 10
+        [app_id="com.mitchellh.ghostty"] move to workspace 1
+        [class="vesktop"] move to workspace 2
+        [class="Signal"] move to workspace 4
+        [class="Element"] move to workspace 5
+      }
+
+      exec waybar
+      exec mako
+      exec blueman-manager
+      exec vesktop
+      exec signal-desktop
+      exec element-desktop
+      exec ghostty
+      exec swaymsg workspace 1'';
     package = null;
   };
   services.mako = {

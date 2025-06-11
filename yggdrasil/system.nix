@@ -1,30 +1,35 @@
-{ config, lib, pkgs, ... }: 
 {
-    imports = [
-        ./hardware.nix
-        ../common/system.nix
-        ../common/bluetooth.nix
-        ../common/nvidia.nix
-        ../common/plasma.nix
-        ../common/virtualisation.nix
-        # ../common/docker.nix
-    ];
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+{
+  imports = [
+    ./hardware.nix
+    ../common/system.nix
+    ../common/bluetooth.nix
+    ../common/nvidia.nix
+    ../common/plasma.nix
+    ../common/virtualisation.nix
+    # ../common/docker.nix
+  ];
 
-    programs.virt-manager.enable = true;
-    
-    virtualisation.podman = {
-        enable = true;
-        dockerCompat = true;
-    };
+  programs.virt-manager.enable = true;
 
-    environment.systemPackages = with pkgs; [
-        distrobox
-    ];
+  virtualisation.podman = {
+    enable = true;
+    dockerCompat = true;
+  };
 
-    services.sunshine = {
-        enable = true;
-        capSysAdmin = true;
-    };
+  environment.systemPackages = with pkgs; [
+    distrobox
+  ];
 
-    networking.hostName = "yggdrasil";
+  services.sunshine = {
+    enable = true;
+    capSysAdmin = true;
+  };
+
+  networking.hostName = "yggdrasil";
 }

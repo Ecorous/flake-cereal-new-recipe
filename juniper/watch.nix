@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 {
   home.stateVersion = "24.11";
 
@@ -32,7 +37,11 @@
       settings = {
         main = {
           modules-center = [ "sway/window" ];
-          modules-right = [ "backlight" "battery" "clock" ];
+          modules-right = [
+            "backlight"
+            "battery"
+            "clock"
+          ];
 
           "sway/window" = {
             format = "{title}";
@@ -60,7 +69,8 @@
       menu = "fuzzel";
       modifier = "Mod4";
       terminal = "ghostty";
-      output."*".bg = "/run/current-system/sw/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png fill";
+      output."*".bg =
+        "/run/current-system/sw/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png fill";
       input = {
         "type:keyboard" = {
           xkb_layout = "gb";
@@ -71,7 +81,7 @@
           natural_scroll = "enabled";
         };
       };
-      bars = [];
+      bars = [ ];
 
       keybindings = lib.mkOptionDefault {
         "--locked XF86MonBrightnessDown" = "exec /home/watch/scripts/brightness_down.sh";
@@ -80,32 +90,32 @@
         "--locked XF86Search" = "exec /home/watch/scripts/brightness_set_1.sh";
       };
 
-  };
-  extraConfig = ''
-    blur enable
-    blur_xray enable
-    corner_radius 5
-    default_dim_inactive 0.1
-    
-    for_window {
-      [app_id=".blueman-manager-wrapped"] move to workspace 4
-      [app_id="mpv"] move to workspace 1
-      [app_id="com.mitchellh.ghostty"] move to workspace 2
-      [app_id="com.saivert.pwvucontrol"] move to workspace 3
-      [app_id="org.kde.dolphin"] move to workspace 5
-      [app_id="org.gnome.Nautilus"] move to workspace 5
-    }
-      
-    exec waybar
-    exec blueman-manager
-    exec pwvucontrol
-    exec nautilus /srv/watch
-    exec ghostty
-    exec bluetoothctl connect B0:38:E2:3B:0F:BF
-    exec bluetoothctl connect B0:38:E2:6E:00:38
+    };
+    extraConfig = ''
+      blur enable
+      blur_xray enable
+      corner_radius 5
+      default_dim_inactive 0.1
 
-    exec nu -c "pactl load-module module-combine-sink; sleep 1sec; pactl set-default-sink combined"
-    exec nu -c "sleep 2sec; swaymsg workspace 5'';
+      for_window {
+        [app_id=".blueman-manager-wrapped"] move to workspace 4
+        [app_id="mpv"] move to workspace 1
+        [app_id="com.mitchellh.ghostty"] move to workspace 2
+        [app_id="com.saivert.pwvucontrol"] move to workspace 3
+        [app_id="org.kde.dolphin"] move to workspace 5
+        [app_id="org.gnome.Nautilus"] move to workspace 5
+      }
+        
+      exec waybar
+      exec blueman-manager
+      exec pwvucontrol
+      exec nautilus /srv/watch
+      exec ghostty
+      exec bluetoothctl connect B0:38:E2:3B:0F:BF
+      exec bluetoothctl connect B0:38:E2:6E:00:38
+
+      exec nu -c "pactl load-module module-combine-sink; sleep 1sec; pactl set-default-sink combined"
+      exec nu -c "sleep 2sec; swaymsg workspace 5'';
     package = null;
   };
 

@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 {
   programs = {
@@ -18,7 +23,7 @@
     # beeper
     signal-desktop
     kdePackages.dolphin
-    vscode-fhs
+    vscode-fhsZ
     mpv
     jellyfin-mpv-shim
     finamp
@@ -44,7 +49,8 @@
   fonts.fontconfig.enable = true;
   fonts.packages = [ pkgs.nerd-fonts.jetbrains-mono ];
 
-  hardware.graphics = { # TODO: do proper individual graphics for each system. nixos wiki on video acceleration
+  hardware.graphics = {
+    # TODO: do proper individual graphics for each system. nixos wiki on video acceleration
     enable = true;
     extraPackages = [ pkgs.libGL ];
   };

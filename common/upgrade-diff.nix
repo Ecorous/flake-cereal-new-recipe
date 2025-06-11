@@ -1,5 +1,6 @@
 # Thank you https://github.com/soopyc/gensokyo/blob/a21ffa952a7aa6231fa3850ff33f4b837d3b183a/global/upgrade-diff.nix
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   system.activationScripts.diff = {
     supportsDryActivation = true;
     text = ''

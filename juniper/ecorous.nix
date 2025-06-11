@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 {
   imports = [
     ../common/ecorous.nix
@@ -14,7 +19,7 @@
   home.file."scripts/brightness_toggle.nu".source = ../files/brightness_toggle.nu;
   home.file."scripts/brightness_toggle.nu".executable = true;
   home.file."scripts/sway_workspaces.sh".source = ../files/sway_workspaces.sh;
-  home.file."scripts/sway_workspaces.sh".executable = true; 
+  home.file."scripts/sway_workspaces.sh".executable = true;
 
   home.file.".config/nushell/autoload/juniper.nu".source = ../files/nu/juniper.nu;
   home.file.".config/nushell/mommy.nu".source = ../files/nu/mommy.nu;

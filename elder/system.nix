@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 {
   imports = [
@@ -26,7 +31,7 @@
   users.users = {
     david = {
       isNormalUser = true;
-      extraGroups = [ "smbaccu"];
+      extraGroups = [ "smbaccu" ];
     };
     tirfarthoinn = {
       isNormalUser = true;
@@ -38,19 +43,27 @@
     };
     hellholesys = {
       isNormalUser = true;
-      extraGroups = [ "wheel" "smbaccu" "docker" ];
+      extraGroups = [
+        "wheel"
+        "smbaccu"
+        "docker"
+      ];
       shell = pkgs.fish;
     };
     nick = {
       isNormalUser = true;
-      extraGroups = [ "wheel" "smbaccu" "docker" ];
+      extraGroups = [
+        "wheel"
+        "smbaccu"
+        "docker"
+      ];
       shell = pkgs.fish;
     };
     ecorous.extraGroups = [ "smbaccu" ];
   };
 
   programs.fish.enable = true;
-  services.gvfs.enable = true; 
+  services.gvfs.enable = true;
   services.udisks2.enable = true;
 
   services.cjdns = {
