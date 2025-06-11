@@ -22,6 +22,8 @@ $env.PROMPT_COMMAND = {||
     $path_segment | str replace --all (char path_sep) $"($separator_color)(char path_sep)($path_color)"
 }
 
+$env.TRANSIENT_PROMPT_COMMAND_RIGHT = null;
+
 $env.config.highlight_resolved_externals = true
 $env.config.color_config.shape_external = "light_red"
 $env.config.color_config.shape_external_resolved = "light_cyan_bold" 
@@ -179,6 +181,32 @@ def "wsl exists" [name: string = ""] {
     ($name | str downcase) in (wsl list | get name)
 }
 
+def "wsl ssh-agent" [
+    --distro(-d): string = "DEFAULT"
+    --foreground(-f)
+] {
+    let d =  if ($distro == "DEFAULT") {
+        wsl default
+    } else {
+        if (not (wsl exists ($distro | str downcase) )) {
+            error make {msg: "distro '$distro' does not exist, please use 'wsl list' to see available distros."}
+        }
+        $distro | str downcase
+    }
+    if ($d != "nixos") and ($d != "archlinux") {
+        error make {msg: $"distro ($distro) is not supported for ssh-agent forwarding, only 'nixos' and 'archlinux' are supported."}
+    }
+    if $foreground {
+        ssh $"($d).wsl" -A -T "$env.SSH_AUTH_SOCK | save -f /tmp/ssh-agent-sock.txt; bash"
+    } else {
+        print { id: (job spawn {
+            ssh $"($d).wsl" -A -T "$env.SSH_AUTH_SOCK | save -f /tmp/ssh-agent-sock.txt; bash"
+        })}
+
+    }
+
+}
+
 def "wsl run" [
     --distro(-d): string = "DEFAULT"
     --forward-ssh-agent(-a)
@@ -281,6 +309,8 @@ path add ~/.deno/bin
 # -----------------------------------------------------------
 
 alias gc = git commit -S -a -m
+alias gpu = git push
+alias gpl = git pull
 alias g = git
 
 alias wg = winget.exe
@@ -294,9 +324,8 @@ alias nrbf = nrb switch --flake
 alias snrbf = snrb switch --flake
 alias brctl = brightnessctl
 
-
-
-
+alias cat = open -r
+alias grep = rg
 
 
 # -----------------------------------------------------------

@@ -54,6 +54,8 @@
     psmisc
     feh
     carapace
+    ripgrep
+    ripgrep-all
   ];
 
   users.defaultUserShell = pkgs.nushell;

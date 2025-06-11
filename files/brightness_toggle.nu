@@ -6,10 +6,10 @@ let current_value = brctl get
 
 let tmp_file = "/tmp/brightness_value.txt"
 
-if $current_value == 0 {
+if $current_value == 0 or $current_value == "0" {
     try {
         let tmp_value = ( $tmp_file | open -r );
-        if $tmp_value != 0 {
+        if $tmp_value != 0 and $tmp_value != "0" {
             brctl set $tmp_value
         } else {
             brctl set 1
