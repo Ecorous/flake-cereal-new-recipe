@@ -23,7 +23,7 @@
     # beeper
     signal-desktop
     kdePackages.dolphin
-    vscode-fhsZ
+    vscode-fhs
     mpv
     jellyfin-mpv-shim
     finamp

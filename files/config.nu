@@ -375,13 +375,15 @@ def "nixos juniper" [] {
     }
 }
 def "nixos elder" [] {
-    if ($wsl_for_nixos) {
+    if ($windows) {
+        if ($wsl_for_nixos) {
             print "warning: tried to build on windows - using WSL instead"
             wsl run --distro nixos {nixos elder}
         } else {
             print "warning: cannot build nixos on windows (no usable WSL distro found)"
             return
         }
+    }
     if (hn "elder") {
         nixos localhost
     } else {
