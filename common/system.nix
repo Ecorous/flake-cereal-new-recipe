@@ -90,8 +90,6 @@
       config = {
         init.defaultBranch = "mistress";
         gpg.format = "ssh";
-
-        # FIXME - this is global
         # user = {
         #   name = "Ecorous";
         #   email = "ecorous@outlook.com";
@@ -99,15 +97,13 @@
         # };
 
         # "gpg \"ssh\"".program = "${lib.getExe' pkgs._1password-gui "op-ssh-sign"}";
-        commit.gpgSign = false; # TODO for now
+        # commit.gpgSign = false; 
       };
     };
   };
 
   #  _1password-gui.enable = true;
   # _1password-gui.polkitPolicyOwners = [ "ecorous" ];
-  # TODO: sort out programs to setup - also need to setup home manager still, so take that into consideration
-
   services = {
     tailscale.enable = true;
     openssh.enable = true;

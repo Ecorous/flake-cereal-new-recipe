@@ -60,7 +60,6 @@
   };
 
   wayland.windowManager.sway = {
-    # FIXME this shouldn't be in global home-manager config. make a sway-hm file and import it additionally for each dsevice using the sway setup.
     enable = true;
     config = {
       menu = "fuzzel";
