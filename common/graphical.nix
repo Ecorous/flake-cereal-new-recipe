@@ -44,7 +44,6 @@
 
   services.xserver.xkb.layout = "gb";
 
-
   fonts.fontconfig.enable = true;
   fonts.packages = [ pkgs.nerd-fonts.jetbrains-mono ];
 

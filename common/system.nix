@@ -97,7 +97,7 @@
         # };
 
         # "gpg \"ssh\"".program = "${lib.getExe' pkgs._1password-gui "op-ssh-sign"}";
-        # commit.gpgSign = false; 
+        # commit.gpgSign = false;
       };
     };
   };
@@ -110,7 +110,12 @@
     zerotierone.enable = true;
   };
 
-  security.sudo.wheelNeedsPassword = false;
+  # security.sudo.wheelNeedsPassword = false;
+  security.sudo.enable = false;
+  security.sudo-rs = {
+    enable = true;
+    wheelNeedsPassword = false;
+  };
 
   networking.firewall.enable = false;
 

@@ -11,6 +11,7 @@
   # gpu: gtx 1080 (as of ~2023-10?)
 
   imports = [
+    ../common/hardware.nix
     (modulesPath + "/installer/scan/not-detected.nix")
   ];
 

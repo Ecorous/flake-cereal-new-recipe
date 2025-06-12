@@ -2,6 +2,7 @@
 {
   home-manager.useGlobalPkgs = true;
   home-manager.useUserPackages = true;
+  home-manager.backupFileExtension = "hm.bak";
   nixpkgs.overlays = [
     (final: prev: {
       openssh = prev.openssh.overrideAttrs (old: {

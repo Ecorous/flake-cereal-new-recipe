@@ -1,5 +1,7 @@
 # Global configuration for Nushell
 
+source ./catppuccin_mocha.nu
+
 let host = (sys host | get hostname | str downcase)
 
 # -----------------------------------------------------------
@@ -110,6 +112,12 @@ def forward [ --local-port(-l): int --remote-address(-r): string --expose(-e)=tr
     }
 }
 
+def --wrapped "git nix-commit-push" [...rest] {
+    nixfmt **/*.nix; gc ...$rest; gpu
+}
+
+alias gncp = git nix-commit-push
+
 # -----------------------------------------------------------
 #  Zerotier commands
 # -----------------------------------------------------------
@@ -137,10 +145,23 @@ def "zerotier join" [id: string] {
     | upsert type ($in.type | str downcase)
 }
 
+# -----------------------------------------------------------
+# Tailscale commands
+# -----------------------------------------------------------
+
+alias tss = tailscale status
+def "tailscale status" [] {
+    tss
+    | str replace --all -r " {1,}" "  " 
+    | lines 
+    | parse "{ip}  {host}  {user}  {os}  {data}" 
+    | upsert data {|r| $r.data | str replace --all -r " {1,}" " "}
+}
+
 
 # -----------------------------------------------------------
 #  WSL commands
-# ------------------------------------------------------------
+# -----------------------------------------------------------
 
 
 def "wsl list" [] {
