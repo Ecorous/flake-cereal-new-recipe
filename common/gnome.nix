@@ -1,13 +1,4 @@
-<<<<<<< HEAD
 { config, lib, pkgs, ... }:
-=======
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}:
->>>>>>> 0938a866a31de7f98db4a8b129b2e76057fae2a2
 
 {
   imports = [
@@ -32,8 +23,4 @@
     glib-networking.enable = true;
     games.enable = true;
   };
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 0938a866a31de7f98db4a8b129b2e76057fae2a2
