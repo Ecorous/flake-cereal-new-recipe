@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 {
   services.caddy = {
     enable = true;
@@ -8,7 +13,7 @@
     '';
     virtualHosts = {
       "https://jellyfin.elder.int" = {
-        serverAliases = [ 
+        serverAliases = [
           "https://jellyfin.elder.ext"
           "https://jf.elder.int"
           "https://jf.elder.ext"
@@ -26,27 +31,43 @@
         '';
       };
       "http://wol.elder.int" = {
-        serverAliases = [ "https://wol.elder.int" "http://wol.elder.ext" "https://wol.elder.ext" ];
+        serverAliases = [
+          "https://wol.elder.int"
+          "http://wol.elder.ext"
+          "https://wol.elder.ext"
+        ];
         extraConfig = ''
           redir / /wolweb 302
           reverse_proxy localhost:8089
         '';
       };
       "http://jellystat.elder.int" = {
-        serverAliases = [ "https://jellystat.elder.int" "http://jellystat.elder.ext" "https://jellystat.elder.ext" ];
+        serverAliases = [
+          "https://jellystat.elder.int"
+          "http://jellystat.elder.ext"
+          "https://jellystat.elder.ext"
+        ];
         extraConfig = ''
           reverse_proxy localhost:3000
         '';
       };
       "http://files.elder.int" = {
-        serverAliases = [ "https://files.elder.int" "http://files.elder.ext" "https://files.elder.ext" ];
+        serverAliases = [
+          "https://files.elder.int"
+          "http://files.elder.ext"
+          "https://files.elder.ext"
+        ];
         extraConfig = ''
           root /srv/public
           file_server  
         '';
       };
       "http://elder.int" = {
-        serverAliases = [ "https://elder.int" "http://elder.ext" "https://elder.ext" ];
+        serverAliases = [
+          "https://elder.int"
+          "http://elder.ext"
+          "https://elder.ext"
+        ];
         extraConfig = ''
           root /srv/www
           file_server  

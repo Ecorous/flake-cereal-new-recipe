@@ -18,8 +18,8 @@
         package = pkgs.fira-code;
       };
       extraConfig = ''
-      content-align=center
-      background=/usr/share/backgrounds/lycorecowallpaper.png
+        content-align=center
+        background=/usr/share/backgrounds/lycorecowallpaper.png
       '';
     };
   };

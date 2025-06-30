@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 {
   networking = {
     hostName = "elder";
@@ -23,14 +28,19 @@
       internalInterfaces = [ "br0" ];
       internalIPs = [ "192.168.69.0/24" ];
     };
-    
+
     interfaces = {
       "wlan0" = {
         useDHCP = true;
         tempAddress = "disabled";
       };
       "br0" = {
-        ipv4.addresses = [ { address = "192.168.69.1"; prefixLength = 24; } ];
+        ipv4.addresses = [
+          {
+            address = "192.168.69.1";
+            prefixLength = 24;
+          }
+        ];
         useDHCP = false;
       };
     };
@@ -59,7 +69,7 @@
   #         prefixLength = 24;
   #       }];
   #     };
-      
+
   #   };
   #   nat.enable = false;
   #   nftables = {
@@ -159,7 +169,7 @@
 
   #         {
   #           name = "domain-name-servers";
-  #           data = "1.1.1.1"; 
+  #           data = "1.1.1.1";
   #         }
   #       ];
   #     }];
@@ -178,14 +188,23 @@
         "121,192.168.69.0/24,192.168.69.1"
         "66,192.168.69.1"
       ];
-      dhcp-host = [ "60:cf:84:84:7f:2e,192.168.69.2" "00:19:99:a0:55:4e,192.168.69.3" "94:de:80:c3:cd:5e,192.168.69.4" ];
-      listen-address = [ "127.0.0.1" "192.168.69.1" "192.168.1.242" "0.0.0.0" ];
+      dhcp-host = [
+        "60:cf:84:84:7f:2e,192.168.69.2"
+        "00:19:99:a0:55:4e,192.168.69.3"
+        "94:de:80:c3:cd:5e,192.168.69.4"
+      ];
+      listen-address = [
+        "127.0.0.1"
+        "192.168.69.1"
+        "192.168.1.242"
+        "0.0.0.0"
+      ];
       expand-hosts = true;
       server = [
         "1.1.1.1"
         "1.0.0.1"
       ];
-      address = [ 
+      address = [
         "/elder.int/192.168.69.1"
         "/elder.ext/192.168.1.242"
         "/jellyfin.elder.int/192.168.69.1"

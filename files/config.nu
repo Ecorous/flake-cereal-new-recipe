@@ -1,5 +1,7 @@
 # Global configuration for Nushell
 
+source ./catppuccin_mocha.nu
+
 let host = (sys host | get hostname | str downcase)
 
 # -----------------------------------------------------------
@@ -108,6 +110,12 @@ def forward [ --local-port(-l): int --remote-address(-r): string --expose(-e)=tr
     }
 }
 
+def --wrapped "git nix-commit-push" [...rest] {
+    nixfmt **/*.nix; gc ...$rest; gpu
+}
+
+alias gncp = git nix-commit-push
+
 # -----------------------------------------------------------
 #  Zoxide setup
 # -----------------------------------------------------------
@@ -149,10 +157,23 @@ def "zerotier join" [id: string] {
     | upsert type ($in.type | str downcase)
 }
 
+# -----------------------------------------------------------
+# Tailscale commands
+# -----------------------------------------------------------
+
+alias tss = tailscale status
+def "tailscale status" [] {
+    tss
+    | str replace --all -r " {1,}" "  " 
+    | lines 
+    | parse "{ip}  {host}  {user}  {os}  {data}" 
+    | upsert data {|r| $r.data | str replace --all -r " {1,}" " "}
+}
+
 
 # -----------------------------------------------------------
 #  WSL commands
-# ------------------------------------------------------------
+# -----------------------------------------------------------
 
 
 def "wsl list" [] {
@@ -392,13 +413,15 @@ def "nixos juniper" [] {
     }
 }
 def "nixos elder" [] {
-    if ($wsl_for_nixos) {
+    if ($windows) {
+        if ($wsl_for_nixos) {
             print "warning: tried to build on windows - using WSL instead"
             wsl run --distro nixos {nixos elder}
         } else {
             print "warning: cannot build nixos on windows (no usable WSL distro found)"
             return
         }
+    }
     if (hn "elder") {
         nixos localhost
     } else {

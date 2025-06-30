@@ -1,10 +1,18 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 {
   imports = [
     ./upgrade-diff.nix
   ];
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
 
   boot.loader.systemd-boot.enable = lib.mkDefault true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -13,9 +21,17 @@
   nixpkgs.config.allowUnfree = true;
   time.timeZone = "Europe/London";
 
-  networking.nameservers = lib.mkDefault [ "192.168.69.1" "192.168.1.242" "1.1.1.1" "1.0.0.1" ];
+  networking.nameservers = lib.mkDefault [
+    "192.168.69.1"
+    "192.168.1.242"
+    "1.1.1.1"
+    "1.0.0.1"
+  ];
 
-  nix.settings.trusted-users = [ "root" "ecorous" ];
+  nix.settings.trusted-users = [
+    "root"
+    "ecorous"
+  ];
 
   i18n.defaultLocale = "en_GB.UTF-8";
   console = {
@@ -42,14 +58,14 @@
     blahaj
     kitty.terminfo
     ghostty.terminfo
-    nixfmt
+    nixfmt-rfc-style
     parted
     usbutils
     pciutils
     dig
     nss_latest
     nss_latest.tools
-    wakeonlan 
+    wakeonlan
     libnotify
     psmisc
     feh
@@ -74,8 +90,6 @@
       config = {
         init.defaultBranch = "mistress";
         gpg.format = "ssh";
-
-        # FIXME - this is global
         # user = {
         #   name = "Ecorous";
         #   email = "ecorous@outlook.com";
@@ -83,25 +97,27 @@
         # };
 
         # "gpg \"ssh\"".program = "${lib.getExe' pkgs._1password-gui "op-ssh-sign"}";
-        commit.gpgSign = false; # TODO for now
+        # commit.gpgSign = false;
       };
     };
   };
-  
+
   #  _1password-gui.enable = true;
   # _1password-gui.polkitPolicyOwners = [ "ecorous" ];
-  # TODO: sort out programs to setup - also need to setup home manager still, so take that into consideration
-
   services = {
     tailscale.enable = true;
     openssh.enable = true;
     zerotierone.enable = true;
   };
 
-  security.sudo.wheelNeedsPassword = false;
+  # security.sudo.wheelNeedsPassword = false;
+  security.sudo.enable = false;
+  security.sudo-rs = {
+    enable = true;
+    wheelNeedsPassword = false;
+  };
 
   networking.firewall.enable = false;
-
 
   system.stateVersion = "25.05"; # no touchy. bad.
 }

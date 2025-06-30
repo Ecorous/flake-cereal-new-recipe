@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 {
   imports = [
@@ -31,8 +36,11 @@
   services.displayManager.gdm.enable = lib.mkForce false;
   qt.style = lib.mkForce "breeze";
   qt.platformTheme = lib.mkForce "kde6";
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 0938a866a31de7f98db4a8b129b2e76057fae2a2
 
   hardware.graphics.extraPackages = [ pkgs.intel-media-driver ];
 
