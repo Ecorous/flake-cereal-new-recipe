@@ -22,11 +22,11 @@ $env.PROMPT_COMMAND = {||
     $path_segment | str replace --all (char path_sep) $"($separator_color)(char path_sep)($path_color)"
 }
 
+$env.TRANSIENT_PROMPT_COMMAND_RIGHT = null;
+
 $env.config.highlight_resolved_externals = true
 $env.config.color_config.shape_external = "light_red"
 $env.config.color_config.shape_external_resolved = "light_cyan_bold" 
-
-
 
 
 
@@ -109,6 +109,20 @@ def forward [ --local-port(-l): int --remote-address(-r): string --expose(-e)=tr
 }
 
 # -----------------------------------------------------------
+#  Zoxide setup
+# -----------------------------------------------------------
+const __zoxide_path = ($nu.default-config-dir | path join ".zoxide.nu")
+if (exists zoxide) {
+    zoxide init nushell | save -f $__zoxide_path
+}
+
+source (if ($__zoxide_path | path exists) { $__zoxide_path } else { null })
+
+
+
+
+
+# -----------------------------------------------------------
 #  Zerotier commands
 # -----------------------------------------------------------
 
@@ -177,6 +191,32 @@ def "wsl exists" [name: string = ""] {
     }
     
     ($name | str downcase) in (wsl list | get name)
+}
+
+def "wsl ssh-agent" [
+    --distro(-d): string = "DEFAULT"
+    --foreground(-f)
+] {
+    let d =  if ($distro == "DEFAULT") {
+        wsl default
+    } else {
+        if (not (wsl exists ($distro | str downcase) )) {
+            error make {msg: "distro '$distro' does not exist, please use 'wsl list' to see available distros."}
+        }
+        $distro | str downcase
+    }
+    if ($d != "nixos") and ($d != "archlinux") {
+        error make {msg: $"distro ($distro) is not supported for ssh-agent forwarding, only 'nixos' and 'archlinux' are supported."}
+    }
+    if $foreground {
+        ssh $"($d).wsl" -A -T "$env.SSH_AUTH_SOCK | save -f /tmp/ssh-agent-sock.txt; bash"
+    } else {
+        print { id: (job spawn {
+            ssh $"($d).wsl" -A -T "$env.SSH_AUTH_SOCK | save -f /tmp/ssh-agent-sock.txt; bash"
+        })}
+
+    }
+
 }
 
 def "wsl run" [
@@ -250,6 +290,10 @@ if ($windows) {
     panic "??? maybe macos?"
 }
 
+if ($windows) {
+    $env.HOME = $env.USERPROFILE
+}
+
 
 let flake_path = $env.ENIX_FLAKE_PATH
 # let nrb_path = $"path:($flake_path)#($host)"
@@ -262,7 +306,7 @@ if $wsl and ("/tmp/ssh-agent-sock.txt" | path exists) {
     let ssh_agent_sock = (open /tmp/ssh-agent-sock.txt | str trim)
     if ($ssh_agent_sock != "") {
         $env.SSH_AUTH_SOCK = $ssh_agent_sock
-        print "using ssh agent socket: $ssh_agent_sock"
+        print $"using ssh agent socket: ($ssh_agent_sock)"
     } else {
         print "warning: ssh agent socket is empty, not setting SSH_AUTH_SOCK"
     }
@@ -275,12 +319,15 @@ if $wsl and ("/tmp/ssh-agent-sock.txt" | path exists) {
 
 use std "path add"
 path add ~/.deno/bin
+path add ~/.local/bin
 
 # -----------------------------------------------------------
 #  Aliases
 # -----------------------------------------------------------
 
 alias gc = git commit -S -a -m
+alias gpu = git push
+alias gpl = git pull
 alias g = git
 
 alias wg = winget.exe
@@ -294,9 +341,8 @@ alias nrbf = nrb switch --flake
 alias snrbf = snrb switch --flake
 alias brctl = brightnessctl
 
-
-
-
+alias cat = open -r
+alias grep = rg
 
 
 # -----------------------------------------------------------
@@ -468,6 +514,9 @@ let carapace_completer = {|spans: list<string>|
     | from json
     | if ($in | default [] | where value =~ '^-.*ERR$' | is-empty) { $in } else { null }
 }
+let zoxide_completer = {|spans|
+    $spans | skip 1 | zoxide query -l ...$in | lines | each {|line| $line | str replace "\\" "/" | str replace $env.HOME '~' } | where {|x| $x != $env.PWD}
+}
 let external_completer = {|spans|
     let expanded_alias = scope aliases
     | where name == $spans.0
@@ -480,6 +529,7 @@ let external_completer = {|spans|
     } else {
         $spans
     }
+    $spans | save -f ~/.tmp-spans.nuon
 
     match $spans.0 {
         # carapace completions are incorrect for nu
@@ -490,6 +540,7 @@ let external_completer = {|spans|
         # asdf => $fish_completer
         # use zoxide completions for zoxide commands
         # __zoxide_z | __zoxide_zi => $zoxide_completer
+        __zoxide_z | __zoxide_zi | z | zi => $zoxide_completer
         _ => $carapace_completer
     } | do $in $spans
 }

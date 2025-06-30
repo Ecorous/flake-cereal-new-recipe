@@ -29,6 +29,12 @@
     pwvucontrol
     openrgb
     onlyoffice-desktopeditors
+    twinkle
+    jami
+    steam-run
+    protontricks
+    protonup-ng
+    protonup-qt
   ];
 
   services.xserver.xkb.layout = "gb";
@@ -41,6 +47,13 @@
   hardware.graphics = { # TODO: do proper individual graphics for each system. nixos wiki on video acceleration
     enable = true;
     extraPackages = [ pkgs.libGL ];
+  };
+
+  programs.steam = {
+    enable = true;
+    extraCompatPackages = with pkgs; [
+      proton-ge-bin
+    ];
   };
 
   services.pipewire = import ./pipewire.nix;

@@ -7,7 +7,7 @@
 
   services.displayManager.sddm.settings.Theme.ThemeDir = lib.mkForce "/sddm_themes";
 
-  services.displayManager.defaultSession = "sway";
+  # services.displayManager.defaultSession = lib.mkDefault "sway";
   programs.sway = {
     enable = true;
     package = pkgs.swayfx;
@@ -26,7 +26,7 @@
       nwg-look
     ];
   };
-  qt.platformTheme = "qt5ct";
-  environment.sessionVariables.GTK_THEME = "Breeze-Dark";
+  # qt.platformTheme = "qt5ct";
+  # environment.sessionVariables.GTK_THEME = "Breeze-Dark";
   environment.sessionVariables.MOZ_ENABLE_WAYLAND = 0;
 }
