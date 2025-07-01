@@ -1,18 +1,8 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}:
+{ config, lib, pkgs, ... }:
 
 {
-  imports = [
-    ./upgrade-diff.nix
-  ];
-  nix.settings.experimental-features = [
-    "nix-command"
-    "flakes"
-  ];
+  imports = [ ./upgrade-diff.nix ];
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   boot.loader.systemd-boot.enable = lib.mkDefault true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -21,17 +11,10 @@
   nixpkgs.config.allowUnfree = true;
   time.timeZone = "Europe/London";
 
-  networking.nameservers = lib.mkDefault [
-    "192.168.69.1"
-    "192.168.1.242"
-    "1.1.1.1"
-    "1.0.0.1"
-  ];
+  networking.nameservers =
+    lib.mkDefault [ "192.168.69.1" "192.168.1.242" "1.1.1.1" "1.0.0.1" ];
 
-  nix.settings.trusted-users = [
-    "root"
-    "ecorous"
-  ];
+  nix.settings.trusted-users = [ "root" "ecorous" ];
 
   i18n.defaultLocale = "en_GB.UTF-8";
   console = {

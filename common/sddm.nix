@@ -1,8 +1,5 @@
-{ pkgs, lib, ... }:
-{
-  environment.systemPackages = [
-    pkgs.kdePackages.plasma-desktop
-  ];
+{ pkgs, lib, ... }: {
+  environment.systemPackages = [ pkgs.kdePackages.plasma-desktop ];
   services.displayManager.sddm = {
     enable = true;
     package = lib.mkForce pkgs.kdePackages.sddm;

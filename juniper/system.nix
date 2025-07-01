@@ -1,14 +1,9 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}:
+{ config, lib, pkgs, ... }:
 
 {
   imports = [
     ./hardware.nix
-    ../common/system.nix 
+    ../common/system.nix
     ../common/sway.nix
     ../common/plasma.nix
     # ../common/gnome.nix
@@ -36,8 +31,6 @@
   services.displayManager.gdm.enable = lib.mkForce false;
   qt.style = lib.mkForce "breeze";
   qt.platformTheme = lib.mkForce "kde6";
-
-
 
   hardware.graphics.extraPackages = [ pkgs.intel-media-driver ];
 

@@ -1,16 +1,7 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}:
-{
-  imports = [
-    ./sddm.nix
-    ./graphical.nix
-  ];
+{ config, lib, pkgs, ... }: {
+  imports = [ ./sddm.nix ./graphical.nix ];
 
-  services.displayManager.sddm.settings.Theme.ThemeDir = lib.mkForce "/sddm_themes";
+  # services.displayManager.sddm.settings.Theme.ThemeDir = lib.mkForce "/sddm_themes";
 
   # services.displayManager.defaultSession = lib.mkDefault "sway";
   programs.sway = {

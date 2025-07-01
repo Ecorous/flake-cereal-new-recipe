@@ -1,10 +1,4 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}:
-{
+{ config, lib, pkgs, ... }: {
   imports = [
     ./hardware.nix
     ../common/system.nix
@@ -22,9 +16,7 @@
     dockerCompat = true;
   };
 
-  environment.systemPackages = with pkgs; [
-    distrobox
-  ];
+  environment.systemPackages = with pkgs; [ distrobox ];
 
   services.sunshine = {
     enable = true;

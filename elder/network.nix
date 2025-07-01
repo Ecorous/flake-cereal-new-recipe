@@ -1,26 +1,14 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}:
-{
+{ config, lib, pkgs, ... }: {
   networking = {
     hostName = "elder";
 
     wireless.iwd = {
       enable = true;
-      settings = {
-        Settings.AutoConnect = true;
-      };
+      settings = { Settings.AutoConnect = true; };
     };
     networkmanager.wifi.backend = "iwd";
 
-    bridges = {
-      br0 = {
-        interfaces = [ "eno1" ];
-      };
-    };
+    bridges = { br0 = { interfaces = [ "eno1" ]; }; };
 
     nat = {
       enable = true;
@@ -35,12 +23,10 @@
         tempAddress = "disabled";
       };
       "br0" = {
-        ipv4.addresses = [
-          {
-            address = "192.168.69.1";
-            prefixLength = 24;
-          }
-        ];
+        ipv4.addresses = [{
+          address = "192.168.69.1";
+          prefixLength = 24;
+        }];
         useDHCP = false;
       };
     };
@@ -193,17 +179,9 @@
         "00:19:99:a0:55:4e,192.168.69.3"
         "94:de:80:c3:cd:5e,192.168.69.4"
       ];
-      listen-address = [
-        "127.0.0.1"
-        "192.168.69.1"
-        "192.168.1.242"
-        "0.0.0.0"
-      ];
+      listen-address = [ "127.0.0.1" "192.168.69.1" "192.168.1.242" "0.0.0.0" ];
       expand-hosts = true;
-      server = [
-        "1.1.1.1"
-        "1.0.0.1"
-      ];
+      server = [ "1.1.1.1" "1.0.0.1" ];
       address = [
         "/elder.int/192.168.69.1"
         "/elder.ext/192.168.1.242"

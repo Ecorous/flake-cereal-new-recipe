@@ -1,9 +1,4 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}:
+{ config, lib, pkgs, ... }:
 
 {
   programs = {
@@ -54,9 +49,7 @@
 
   programs.steam = {
     enable = true;
-    extraCompatPackages = with pkgs; [
-      proton-ge-bin
-    ];
+    extraCompatPackages = with pkgs; [ proton-ge-bin ];
   };
 
   services.pipewire = import ./pipewire.nix;

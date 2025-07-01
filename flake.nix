@@ -12,17 +12,8 @@
     fjordlauncher.url = "github:unmojang/fjordlauncher";
   };
 
-  outputs =
-    inputs@{
-      self,
-      nixpkgs,
-      home-manager,
-      nix-ld,
-      nixos-wsl,
-      nix-alien,
-      fjordlauncher,
-    }:
-    {
+  outputs = inputs@{ self, nixpkgs, home-manager, nix-ld, nixos-wsl, nix-alien
+    , fjordlauncher, }: {
       nixosConfigurations = {
         juniper = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";

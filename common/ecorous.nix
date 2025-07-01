@@ -1,10 +1,4 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}:
-{
+{ config, lib, pkgs, ... }: {
   home.stateVersion = "24.11";
 
   home.username = "ecorous";
@@ -27,9 +21,7 @@
     };
     btop = {
       enable = true;
-      settings = {
-        color_theme = "catppuccin-mocha";
-      };
+      settings = { color_theme = "catppuccin-mocha"; };
       themes."catppuccin-mocha" = ''
         # Main background, empty for terminal default, need to be empty if you want transparent background
         theme[main_bg]="#1E1E2E"
@@ -118,9 +110,7 @@
     };
     helix = {
       defaultEditor = true;
-      settings = {
-        theme = "catppuccin_mocha";
-      };
+      settings = { theme = "catppuccin_mocha"; };
 
     };
     ghostty = {
@@ -134,8 +124,10 @@
       extraConfig = {
         commit.gpgSign = true;
         gpg.format = "ssh";
-        user.signingkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIazU90lTF7rPY11hzMA2CdOXmdaOBTZWJ25PBDl1gzS";
-        "gpg \"ssh\"".program = "${lib.getExe' pkgs._1password-gui "op-ssh-sign"}";
+        user.signingkey =
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIazU90lTF7rPY11hzMA2CdOXmdaOBTZWJ25PBDl1gzS";
+        "gpg \"ssh\"".program =
+          "${lib.getExe' pkgs._1password-gui "op-ssh-sign"}";
       };
     };
     nushell = {

@@ -53,6 +53,9 @@ def last [] {
   $env.last
 }
 
+
+
+
 # -----------------------------------------------------------
 #  Utilities
 # -----------------------------------------------------------
@@ -314,6 +317,41 @@ if ($windows) {
 if ($windows) {
     $env.HOME = $env.USERPROFILE
 }
+
+# -----------------------------------------------------------
+# Services command setup
+# -----------------------------------------------------------
+def "services list" [] {
+    pwsh -c "Get-Service" 
+    | collect 
+    | lines 
+    | where { |x| not ($x | str contains "Get-Service" ) } 
+    | ansi strip 
+    | skip 1 
+    | drop nth 1 
+    | str join (char nl) 
+    | detect columns --guess 
+}
+if (not $windows) {
+    # hide "services list"
+}
+
+def "services start" [name: string] {
+    if ($name | is-empty) {
+        error make {msg: "service name cannot be empty"}
+    }
+    pwsh -c $"Start-Service -Name '($name)'" 
+}
+
+
+def "services stop" [name: string] {
+    if ($name | is-empty) {
+        error make {msg: "service name cannot be empty"}
+    }
+    pwsh -c $"Stop-Service -Name '($name)'" 
+}
+
+
 
 
 let flake_path = $env.ENIX_FLAKE_PATH
