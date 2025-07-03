@@ -29,7 +29,7 @@
   };
 
   environment.systemPackages = with pkgs; [
-    nushell
+    (pkgs.callPackage ../pkgs/nushell.nix {})
     helix
     btop
     python3
