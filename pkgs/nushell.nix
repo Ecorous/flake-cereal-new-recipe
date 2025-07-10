@@ -56,6 +56,8 @@ rustPlatform.buildRustPackage {
   buildNoDefaultFeatures = !withDefaultFeatures;
   buildFeatures = additionalFeatures [ ];
 
+  patches = [ ../files/nu-eval-command.patch ];
+
   checkPhase = ''
     runHook preCheck
     (

@@ -1,6 +1,6 @@
 # Global configuration for Nushell
 
-source ./catppuccin_mocha.nu
+
 
 let host = (sys host | get hostname | str downcase)
 
@@ -49,7 +49,7 @@ $env.config = ($env.config | upsert hooks {
 
 
 # retrieve last command output
-def last [] {
+def last_c [] {
   $env.last
 }
 
@@ -60,6 +60,14 @@ def last [] {
 #  Utilities
 # -----------------------------------------------------------
 
+def ghurl []: string -> string {
+    $"git@github.com:($in)"
+}
+
+def gheurl []: string -> string {
+    $"git@github.com:Ecorous/($in)"
+}
+
 def hn [name] {
     $host | str contains $name
 }
@@ -69,7 +77,7 @@ def brctl_percentage [] {
     (brctl g | into int) / (brctl m | into int) * 100 | math round
 }
 
-def "remove_old_kernels" [--duration: duration = 8wk] {
+def remove_old_kernels [--duration: duration = 8wk] {
    ls /boot/kernels | where modified <= (date now) - $duration | each { rm -f $in.name } 
 }
 
@@ -131,7 +139,92 @@ source (if ($__zoxide_path | path exists) { $__zoxide_path } else { null })
 
 
 
+# -----------------------------------------------------------
+#  WinGet commands
+# -----------------------------------------------------------
 
+
+def flagcheck [var, name] {
+    match ($var | describe) {
+        "bool" => {
+            if $var {
+                return $"--($name) ($var) "
+            }  else {
+                return ""
+            }
+        },
+        "string" | "float" | "int" | "number" => {
+            if $var != "" {
+                return $"--($name) ($var) "
+            } else {
+                return ""
+            }
+        },
+    }
+}
+
+use nu/utils/i.nu inherit
+
+def --wrapped  "winget search" [--id: string,                     # Filter results by id
+                                --name: string,                   # Filter results by name
+                                --moniker: string,                # Filter results by moniker
+                                --tag: string,                    # Filter results by tag
+                                --command: string,                # Filter results by command 
+                                --source(-s): string,             # Find package using the specified source
+                                --count(-n): int,                 # Show no more than specified number of results (between 1 and 1000)
+                                --exact(-e),                      # Find package using exact match
+                                --header: string,                 # Optional Windows-Package-Manager REST source HTTP header
+                                --authentication-mode: string,    # Specify authentication window preference (silent, silentPreferred, or interactive)
+                                --authentication-account: string, # Specify the account to be used for authentication
+                                --accept-source-agreements,       # Accept all source agreements during source operations
+                                --versions,                       # Show available versions of the package
+                                --wait,                           # Prompts the user to press any key before exiting
+                                --logs,                           # Open the default logs location 
+                                --verbose,                        # Enables verbose logging for winget
+                                --ignore-warnings,                # Suppresses warning outputs
+                                --disable-interactivity,          # Disable interactive prompts
+                                --proxy: string,                  # Set a proxy to use for this execution
+                                --no-proxy,                       # Disable the use of proxy for this execution
+                                ...rest] {
+    # let flag_str = $'(if $id != "" {$"--id ($id) "} else {""})(if $name != "" {$"--name ($name)"} else {""})'
+    let flag_table = inherit $id $name $moniker $tag $command $source $count $exact $header $authentication_mode $authentication_account $accept_source_agreements $versions $wait $logs $verbose $ignore_warnings $disable_interactivity $proxy $no_proxy
+                          | transpose key value
+                          | compact key
+    let flag_str = $flag_table | each { flagcheck $in.value $in.key } | str join | split row " " | where { |x| $x != "" }
+    ^winget search ...$flag_str ...$rest
+    | lines
+    | drop nth 1
+    | each { str trim }
+    | each { |x| if ($x == "<additional entries truncated due to result limit>") {print "warn: additional entries truncated due to result limit"} else {$x}}
+    | upsert 0 {
+        split row ""
+        | skip until { |x| $x == "N" }
+        | str join
+    }
+    | str join (char nl)
+    | detect columns --guess
+}
+
+def --wrapped "winget show" [...rest] {
+    ^winget show ...$rest
+    | parse "{key}: {val}"
+    | upsert key { str trim }
+    | transpose -dir
+}
+
+def --wrapped "winget list" [...rest] {
+    ^winget list ...$rest
+    | lines
+    | drop nth 1
+    | each { str trim }
+    | upsert 0 {
+        split row ""
+        | skip until { |x| $x == "N" }
+        | str join
+    }
+    | str join (char nl)
+    | detect columns --guess
+}
 
 # -----------------------------------------------------------
 #  Zerotier commands
@@ -318,6 +411,8 @@ if ($windows) {
     $env.HOME = $env.USERPROFILE
 }
 
+source ./catppuccin_mocha.nu
+
 # -----------------------------------------------------------
 # Services command setup
 # -----------------------------------------------------------
@@ -384,14 +479,16 @@ path add ~/.local/bin
 #  Aliases
 # -----------------------------------------------------------
 
+alias gi = git init
+alias grao = git remote add origin
 alias gc = git commit -S -a -m
 alias gpu = git push
 alias gpl = git pull
 alias g = git
 
-alias wg = winget.exe
-alias wgi = winget.exe install
-alias wgs = winget.exe search
+alias wg = winget
+alias wgi = winget install
+alias wgs = winget search
 
 # alias nixos = sudo nixos-rebuild switch --flake path:($env.ENIX_FLAKE_PATH)#($host)
 alias snrb = sudo nixos-rebuild

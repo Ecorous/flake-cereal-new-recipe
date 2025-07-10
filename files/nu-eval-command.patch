@@ -1,0 +1,87 @@
+--- /dev/null
++++ b/crates/nu-command/src/debug/evil.rs
+@@ -0,0 +1,59 @@
++use nu_engine::command_prelude::*;
++use nu_protocol::{BlockId, DeclId, debugger::WithoutDebug, Span, PipelineData, engine::StateWorkingSet};
++
++#[derive(Clone)]
++pub struct Evil;
++
++impl Command for Evil {
++    fn name(&self) -> &str {
++        "evil"
++    }
++
++    fn signature(&self) -> Signature {
++        Signature::build(self.name())
++            .required(
++                "code",
++                SyntaxShape::String,
++                "Meow.",
++            )
++            .input_output_type(Type::Any, Type::Any)
++            .category(Category::Debug)
++    }
++
++    fn description(&self) -> &str {
++        "Meow."
++    }
++
++    fn extra_description(&self) -> &str {
++        "Meow."
++    }
++
++    fn run(
++        &self,
++        engine_state: &EngineState,
++        stack: &mut Stack,
++        call: &Call,
++        input: PipelineData,
++    ) -> Result<PipelineData, ShellError> {
++        let val: String = call.req::<Spanned<String>>(engine_state, stack, 0)?.item;
++        let mut engine_state = engine_state.clone();
++
++        let mut working_set = StateWorkingSet::new(&engine_state);
++        let mut block: std::sync::Arc<nu_protocol::ast::Block> = nu_parser::parse(&mut working_set, None, val.as_bytes(), false);
++        if block.ir_block.is_none() {
++            let block_mut = std::sync::Arc::make_mut(&mut block);
++            block_mut.ir_block = Some(nu_engine::compile(&working_set, block_mut).unwrap());
++        }
++
++        engine_state.merge_delta(working_set.render())?;
++
++        let pipeline_data: PipelineData = nu_engine::eval_block_with_early_return::<WithoutDebug>(
++            &engine_state,
++            // working_set.permanent(),
++            stack,
++            &block,
++            input,
++        ).unwrap();
++        Ok(pipeline_data)
++    }
++}
+diff --git a/crates/nu-command/src/debug/mod.rs b/crates/nu-command/src/debug/mod.rs
+index 19f1c6da6..8a762001a 100644
+--- a/crates/nu-command/src/debug/mod.rs
++++ b/crates/nu-command/src/debug/mod.rs
+@@ -17,6 +17,8 @@ mod view_files;
+ mod view_ir;
+ mod view_source;
+ mod view_span;
++mod evil;
++pub use evil::Evil;
+ 
+ pub use ast::Ast;
+ pub use debug_::Debug;
+diff --git a/crates/nu-command/src/default_context.rs b/crates/nu-command/src/default_context.rs
+index 57e1ed815..d31f73dd1 100644
+--- a/crates/nu-command/src/default_context.rs
++++ b/crates/nu-command/src/default_context.rs
+@@ -45,6 +45,7 @@ pub fn add_shell_command_context(mut engine_state: EngineState) -> EngineState {
+             Each,
+             Enumerate,
+             Every,
++            Evil,
+             Filter,
+             Find,
+             First,
