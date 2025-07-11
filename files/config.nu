@@ -8,6 +8,9 @@ let host = (sys host | get hostname | str downcase)
 #  Prompt configuration
 # -----------------------------------------------------------
 
+$env.EDITOR = "hx";
+$env.config.buffer_editor = "hx";
+
 $env.PROMPT_COMMAND = {||
     let dir = match (do -i { $env.PWD | path relative-to $nu.home-path }) {
         null => $env.PWD
@@ -59,6 +62,29 @@ def last_c [] {
 # -----------------------------------------------------------
 #  Utilities
 # -----------------------------------------------------------
+
+# Create a symlink
+def symlink [
+        file: string
+        link: string
+] {
+        # Remove any existing link - Just in case
+        if ($link | path exists) { rm $link }
+
+         # Create the link - OS specific
+         if ($nu.os-info.family == 'windows') {
+                 # Windows
+                 # Path strings require additional sanitization for mklink
+                 if not (is-admin) and (which sudo | is-not-empty) {
+                   sudo cmd /c mklink /D $'"($link | path expand | str replace '/' '\' --all)"' $'"($file | path expand | str replace '/' '\' --all)"' #"
+                 } else {
+                     ^mklink /D $'"($link | path expand | str replace '/' '\' --all)"' $'"($file | path expand | str replace '/' '\' --all)"' #"
+                  }
+         } else {
+                 # Linux/Mac/BSD
+                 ^ln -s ($file | path expand) ($link | path expand)
+         }
+ }
 
 def ghurl []: string -> string {
     $"git@github.com:($in)"
@@ -750,3 +776,40 @@ if (exists fnm) {
     use fnm
 }
 
+
+
+
+
+
+
+# -----------------------------------------------------------
+#  Completions
+# ------------------------------------------------------------
+    
+let carapace_completer = {|spans: list<string>|
+    carapace $spans.0 nushell ...$spans
+    | from json
+    | if ($in | default [] | where value =~ '^-.*ERR$' | is-empty) { $in } else { null }
+}
+let external_completer = {|spans|
+    let expanded_alias = scope aliases
+    | where name == $spans.0
+    | get -i 0.expansion
+
+    let spans = if $expanded_alias != null {
+        $spans
+        | skip 1
+        | prepend ($expanded_alias | split row ' ' | take 1)
+    } else {
+        $spans
+    }
+    $spans | save -f ~/.tmp-spans.nuon
+
+    match $spans.0 {
+        _ => $carapace_completer
+    } | do $in $spans
+}
+$env.config.completions.external = {
+    enable: true,
+    completer: $external_completer,
+};
