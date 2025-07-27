@@ -32,12 +32,12 @@ rustPlatform.buildRustPackage {
   src = fetchFromGitHub {
     owner = "nushell";
     repo = "nushell";
-    rev = "f6d807bf36d54ec466d0f76c9a91d3c1f55f6bb8";
-    hash = "sha256-GygoboIAounHeeNpPLu9RjFSwlHILVN+toKfIH2blAQ=";
+    rev = "172a0c44bd08fe5de37c987cae7b6cfa638ec4c4";
+    hash = "sha256-ravpLfoUWXeVTf1uuxNHIgDvuau6QZWP9vuVh+w8QHI=";
   };
 
   useFetchCargoVendor = true;
-  cargoHash = "sha256-B3qz/9XWsyODPMYBm6Z7e6U/jIUhhA+BX8qnJEZUTtQ=";
+  cargoHash = "sha256-Pjy0s2Ce8ErB3KbEqhUzaDV+UnUHjRON3TFifh7qTts=";
 
   nativeBuildInputs =
     [ pkg-config ]

@@ -1,4 +1,10 @@
-{ config, lib, pkgs, ... }: {
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+{
   programs = {
     swaylock = {
       enable = true;
@@ -6,8 +12,7 @@
       settings = {
         grace = 2;
         # image = "/home/ecorous/lycorecowallpaper.png";
-        image =
-          "/run/current-system/sw/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png";
+        image = "/run/current-system/sw/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png";
         show-keyboard-layout = true;
         indicator-caps-lock = true;
         effect-blur = "50x10";
@@ -19,7 +24,12 @@
         main = {
           modules-left = [ "sway/workspaces" ];
           modules-center = [ "sway/window" ];
-          modules-right = [ "backlight" "battery" "clock" "tray" ];
+          modules-right = [
+            "backlight"
+            "battery"
+            "clock"
+            "tray"
+          ];
 
           "sway/workspaces" = {
             format = "{name}";
@@ -33,12 +43,16 @@
             display = "intel_backlight";
             format = "{percent}%";
           };
-          battery = { weighted-average = true; };
+          battery = {
+            weighted-average = true;
+          };
           clock = {
             interval = 1;
             format = "{:%F %T}";
           };
-          tray = { show-passive-icons = true; };
+          tray = {
+            show-passive-icons = true;
+          };
         };
       };
     };
@@ -55,7 +69,9 @@
         "/run/current-system/sw/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png fill";
       # output."*".bg = "~/lycorecowallpaper.png fill";
       input = {
-        "type:keyboard" = { xkb_layout = "gb"; };
+        "type:keyboard" = {
+          xkb_layout = "gb";
+        };
         "2:7:SynPS/2_Synaptics_TouchPad" = {
           dwt = "disabled";
           tap = "enabled";
@@ -81,14 +97,10 @@
         # "--locked XF86MonBrightnessDown" = "exec ${pkgs.brightnessctl}/bin/brightnessctl set 1-";
         # "--locked XF86MonBrightnessUp" = "exec ${pkgs.brightnessctl}/bin/brightnessctl set 1+";
         # "--locked XF86Tools" = "exec ${pkgs.brightnessctl}/bin/brightnessctl set 0";
-        "--locked XF86MonBrightnessDown" =
-          "exec /home/ecorous/scripts/brightness_down.sh";
-        "--locked XF86MonBrightnessUp" =
-          "exec /home/ecorous/scripts/brightness_up.sh";
-        "--locked XF86Tools" =
-          "exec /home/ecorous/scripts/brightness_toggle.nu";
-        "--locked XF86Search" =
-          "exec /home/ecorous/scripts/brightness_set_1.sh";
+        "--locked XF86MonBrightnessDown" = "exec /home/ecorous/scripts/brightness_down.sh";
+        "--locked XF86MonBrightnessUp" = "exec /home/ecorous/scripts/brightness_up.sh";
+        "--locked XF86Tools" = "exec /home/ecorous/scripts/brightness_toggle.nu";
+        "--locked XF86Search" = "exec /home/ecorous/scripts/brightness_set_1.sh";
       };
     };
     extraConfig = ''

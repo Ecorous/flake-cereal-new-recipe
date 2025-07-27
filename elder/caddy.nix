@@ -1,4 +1,10 @@
-{ config, lib, pkgs, ... }: {
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+{
   services.caddy = {
     enable = true;
     globalConfig = ''
@@ -57,8 +63,11 @@
         '';
       };
       "http://elder.int" = {
-        serverAliases =
-          [ "https://elder.int" "http://elder.ext" "https://elder.ext" ];
+        serverAliases = [
+          "https://elder.int"
+          "http://elder.ext"
+          "https://elder.ext"
+        ];
         extraConfig = ''
           root /srv/www
           file_server  

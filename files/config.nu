@@ -163,7 +163,22 @@ if (exists zoxide) {
 
 source (if ($__zoxide_path | path exists) { $__zoxide_path } else { null })
 
+# -----------------------------------------------------------
+#  Media Renamer
+# -----------------------------------------------------------
 
+def "mediafix tv" [--dry] {
+    let x = (input "Are you sure you want to do this? [y/N] ")
+    ls | get name
+       | parse "{show}.S{season}E{episode}.{junk}.mkv"
+       | each { |x|
+            {
+              old: $"($x.show).S($x.season)E($x.episode).($x.junk).mkv",
+              new: $"($x.show | str replace '.' ' ') S($x.season)E($x.episode).mkv"
+            }
+        }
+       | each { |y| if $dry { print $"($y.old) -> ($y.new)" } else { mv $y.old $y.new } }
+}
 
 # -----------------------------------------------------------
 #  WinGet commands

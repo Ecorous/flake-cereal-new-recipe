@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 {
   imports = [
@@ -11,7 +16,9 @@
   ];
 
   boot.loader.systemd-boot.enable = false;
-  boot.kernel.sysctl = { "net.ipv4.forward" = 1; };
+  boot.kernel.sysctl = {
+    "net.ipv4.forward" = 1;
+  };
   environment.systemPackages = with pkgs; [ cloudflared ];
   boot.loader.grub = {
     enable = true;
@@ -34,12 +41,20 @@
     };
     hellholesys = {
       isNormalUser = true;
-      extraGroups = [ "wheel" "smbaccu" "docker" ];
+      extraGroups = [
+        "wheel"
+        "smbaccu"
+        "docker"
+      ];
       shell = pkgs.fish;
     };
     nick = {
       isNormalUser = true;
-      extraGroups = [ "wheel" "smbaccu" "docker" ];
+      extraGroups = [
+        "wheel"
+        "smbaccu"
+        "docker"
+      ];
       shell = pkgs.fish;
     };
     ecorous.extraGroups = [ "smbaccu" ];
@@ -75,8 +90,7 @@
         #default = "http_status:404";
         #credentialsFile = "/root/.cloudflared/bd0fa580-9dd0-4fa6-a3c4-79bac8c50f1f.json";
       };
-      credentialsFile =
-        "/root/.cloudflared/bd0fa580-9dd0-4fa6-a3c4-79bac8c50f1f.json";
+      credentialsFile = "/root/.cloudflared/bd0fa580-9dd0-4fa6-a3c4-79bac8c50f1f.json";
       default = "http_status:404";
     };
   };

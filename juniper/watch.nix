@@ -1,4 +1,10 @@
-{ config, lib, pkgs, ... }: {
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+{
   home.stateVersion = "24.11";
 
   home.username = "watch";
@@ -20,8 +26,7 @@
       package = null;
       settings = {
         grace = 2;
-        image =
-          "/run/current-system/sw/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png";
+        image = "/run/current-system/sw/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png";
         show-keyboard-layout = true;
         indicator-caps-lock = true;
         effect-blur = "50x10";
@@ -32,7 +37,11 @@
       settings = {
         main = {
           modules-center = [ "sway/window" ];
-          modules-right = [ "backlight" "battery" "clock" ];
+          modules-right = [
+            "backlight"
+            "battery"
+            "clock"
+          ];
 
           "sway/window" = {
             format = "{title}";
@@ -43,7 +52,9 @@
             display = "intel_backlight";
             format = "brightness: {percent}%";
           };
-          battery = { weighted-average = true; };
+          battery = {
+            weighted-average = true;
+          };
           clock = {
             interval = 1;
             format = "{:%F %T}";
@@ -61,7 +72,9 @@
       output."*".bg =
         "/run/current-system/sw/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png fill";
       input = {
-        "type:keyboard" = { xkb_layout = "gb"; };
+        "type:keyboard" = {
+          xkb_layout = "gb";
+        };
         "2:7:SynPS/2_Synaptics_TouchPad" = {
           dwt = "disabled";
           tap = "enabled";
@@ -71,10 +84,8 @@
       bars = [ ];
 
       keybindings = lib.mkOptionDefault {
-        "--locked XF86MonBrightnessDown" =
-          "exec /home/watch/scripts/brightness_down.sh";
-        "--locked XF86MonBrightnessUp" =
-          "exec /home/watch/scripts/brightness_up.sh";
+        "--locked XF86MonBrightnessDown" = "exec /home/watch/scripts/brightness_down.sh";
+        "--locked XF86MonBrightnessUp" = "exec /home/watch/scripts/brightness_up.sh";
         "--locked XF86Tools" = "exec /home/watch/scripts/brightness_toggle.nu";
         "--locked XF86Search" = "exec /home/watch/scripts/brightness_set_1.sh";
       };
@@ -114,8 +125,7 @@
   home.file."scripts/brightness_up.sh".executable = true;
   home.file."scripts/brightness_set_1.sh".source = ../files/brightness_set_1.sh;
   home.file."scripts/brightness_set_1.sh".executable = true;
-  home.file."scripts/brightness_toggle.nu".source =
-    ../files/brightness_toggle.nu;
+  home.file."scripts/brightness_toggle.nu".source = ../files/brightness_toggle.nu;
   home.file."scripts/brightness_toggle.nu".executable = true;
   home.file."scripts/mpv_wrapper.sh".source = ../files/mpv_wrapper.sh;
   home.file."scripts/mpv_wrapper.sh".executable = true;

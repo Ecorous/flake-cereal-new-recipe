@@ -1,1 +1,9 @@
-{ config, lib, pkgs, ... }: { programs.nix-ld.dev.enable = true; }
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+{
+  programs.nix-ld.dev.enable = true;
+}

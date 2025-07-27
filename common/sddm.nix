@@ -1,4 +1,5 @@
-{ pkgs, lib, ... }: {
+{ pkgs, lib, ... }:
+{
   environment.systemPackages = [ pkgs.kdePackages.plasma-desktop ];
   services.displayManager.sddm = {
     enable = true;

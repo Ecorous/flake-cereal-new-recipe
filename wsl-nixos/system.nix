@@ -1,4 +1,10 @@
-{ config, lib, pkgs, ... }: {
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+{
   imports = [ ../common/system.nix ];
 
   boot.loader.systemd-boot.enable = lib.mkForce false;
