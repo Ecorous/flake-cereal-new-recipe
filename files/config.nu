@@ -474,15 +474,16 @@ if (exists wsl) {
 let wsl_for_nixos = $wsl_for_nixos
 
 
-if ($windows) {
-    $env.ENIX_FLAKE_PATH = $"C:/Users/(whoami)/Projects/($proj)"
+
+let flake_path = $env.ENIX_FLAKE_PATH? | default (if ($windows) {
+    $"C:/Users/(whoami)/Projects/($proj)"
 } else if ($wsl) {
-    $env.ENIX_FLAKE_PATH = $"/mnt/c/Users/(whoami)/Projects/($proj)"
+     $"/mnt/c/Users/(whoami)/Projects/($proj)"
 } else if ($linux) {
-    $env.ENIX_FLAKE_PATH = $"/($proj)"
+    $"/($proj)"
 } else {
-    panic "??? maybe macos?"
-}
+    error make { msg: "maybe macos? failed setting flake path and $env.ENIX_FLAKE_PATH was not set"}
+})
 
 if ($windows) {
     $env.HOME = $env.USERPROFILE
@@ -526,7 +527,6 @@ def "services stop" [name: string] {
 
 
 
-let flake_path = $env.ENIX_FLAKE_PATH
 # let nrb_path = $"path:($flake_path)#($host)"
 
 
