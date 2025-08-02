@@ -9,6 +9,7 @@ let host = (sys host | get hostname | str downcase)
 # -----------------------------------------------------------
 
 $env.EDITOR = "hx";
+$env.VISUAL = "hx";
 $env.config.buffer_editor = "hx";
 
 $env.PROMPT_COMMAND = {||
@@ -46,7 +47,7 @@ $env.config.color_config.shape_external_resolved = "light_cyan_bold"
 # Get last command display and put in a variable for further processing
 $env.config = ($env.config | upsert hooks {
     display_output: {
-        tee {table | print} | $env.last = $in
+        if (term size).columns >= 100 { table -e } else { table } | default ""
     }
 })
 
@@ -57,11 +58,46 @@ def last_c [] {
 }
 
 
-
-
 # -----------------------------------------------------------
 #  Utilities
 # -----------------------------------------------------------
+
+# Download file, using the filename provided by the url if necessary
+def download [
+    url: string,
+    filename: string = "" # If filename is left empty, it will attempt to get the filename from the url
+    --overwrite(-o) # Overwrite an existing file if it's present
+] {
+    let urldata = $url | path parse
+    let actual_filename = if ($filename | is-empty) {
+        $"($urldata.stem | url decode).($urldata.extension)"
+    } else {
+        $filename
+    }
+
+    let filename_span = if ($filename | is-empty) {
+        metadata $url | get span | upsert start {|x| $x.start + ($urldata.parent | split chars | length) + 1} # | upsert end { |x| $x.end - 1 }
+    } else {
+        metadata $filename | get span
+    }
+
+    let decoded_msg = if ($filename | is-empty) { if $"($urldata.stem | url decode).$($urldata.extension)" != $"($urldata.stem).($urldata.extension)" {
+        $" \(($urldata.stem).($urldata.extension) -> ($urldata.stem | url decode).($urldata.extension)\)"
+    } else { "" } } else { "" }
+    
+    #  let span = $urlmeta.span | upsert start {|x| $x.start + ($urldata.parent | split chars | length) + 2} | upsert end { |x| $x.end - 1 }
+    if not $overwrite and ($actual_filename | path exists) {
+        error make {
+            msg: "file already exists",
+            label: {
+                text: $"this file already exists($decoded_msg)",
+                span: $filename_span
+            },
+            help: "try using the --overwrite(-o) flag"
+        }
+    }
+    http get $url | save -f $actual_filename
+}
 
 # Create a symlink
 def symlink [
@@ -132,7 +168,7 @@ if ($host != "elder") { hide update-www }
 
 
 def forward [ --local-port(-l): int --remote-address(-r): string --expose(-e)=true --host(-h)="localhost" ] {
-    let nu_cmd = "nu -c \"print \"listening.. press ctrl+c to exit\"; sleep (999wk * 100)\""
+    let nu_cmd = "nu -c \"print 'listening.. press ctrl+c to exit'; sleep (999wk * 100)\""
     if ($local_port == null) {
         error make {msg: "flag --local-port (-l) is required"}
     }
@@ -493,6 +529,27 @@ def "services stop" [name: string] {
 let flake_path = $env.ENIX_FLAKE_PATH
 # let nrb_path = $"path:($flake_path)#($host)"
 
+
+# ----------------------------------------------------------
+#  Config Setup
+# ----------------------------------------------------------
+
+alias "core config nu" = config nu
+def "config nu" [
+    --local(-l) # Open the local config file (`$nu.config-path`) instead of the `$flake_path/files/config.nu`
+    --doc(-s) # Print a commented `config.nu` with documentation instead.
+    --default(-d) # Print the internal default `config.nu` file instead
+] {
+    if $doc {
+        core config nu --doc
+    } else if $default {
+        core config nu --default 
+    } else if $local { core config nu } else {
+        let editor = $env.config.buffer_editor | default $env.VISUAL | default $env.EDITOR
+        ^$editor $"($flake_path)/files/config.nu"
+    }
+}
+
 # -----------------------------------------------------------
 #  WSL environment setup
 # -----------------------------------------------------------
@@ -719,7 +776,7 @@ let zoxide_completer = {|spans|
 let external_completer = {|spans|
     let expanded_alias = scope aliases
     | where name == $spans.0
-    | get -i 0.expansion
+    | get -o 0.expansion
 
     let spans = if $expanded_alias != null {
         $spans
@@ -809,7 +866,7 @@ let carapace_completer = {|spans: list<string>|
 let external_completer = {|spans|
     let expanded_alias = scope aliases
     | where name == $spans.0
-    | get -i 0.expansion
+    | get -o 0.expansion
 
     let spans = if $expanded_alias != null {
         $spans
