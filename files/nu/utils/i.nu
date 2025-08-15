@@ -9,7 +9,7 @@
 export def inherit [...rest: any] {
     $rest
     | each {|e|
-        metadata $in
+        metadata
         | view span $in.span.start $in.span.end
         | str trim --left --char '$'
         | {($in): $e}

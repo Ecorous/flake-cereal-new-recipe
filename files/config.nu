@@ -29,12 +29,50 @@ $env.PROMPT_COMMAND = {||
 }
 
 $env.TRANSIENT_PROMPT_COMMAND_RIGHT = null;
-
 $env.config.highlight_resolved_externals = true
 $env.config.color_config.shape_external = "light_red"
 $env.config.color_config.shape_external_resolved = "light_cyan_bold" 
 
 
+# `nu-highlight` with default colors
+#
+# Custom themes can produce a lot more ansi color codes and make the output
+# exceed discord's character limits
+def nu-highlight-default [] {
+    let IN = $in
+    $env.config.color_config = {}
+     $IN | nu-highlight
+ }
+
+ # Copy the current commandline, add syntax highlighting, wrap it in a
+ # markdown code block, copy that to the system clipboard.
+ #
+ # Perfect for sharing code snippets on discord
+ def "nu-keybind commandline-copy" []: nothing -> nothing {
+     use std/clip
+     commandline
+     | nu-highlight-default
+     | [
+         '```ansi'
+         $in
+         '```'
+     ]
+     | str join (char nl)
+     | clip copy -a
+ }
+
+ $env.config.keybindings ++= [
+     {
+         name: copy_color_commandline
+         modifier: control_alt
+         keycode: char_c
+         mode: [emacs vi_insert vi_normal]
+         event: {
+             send: executehostcommand
+             cmd: 'nu-keybind commandline-copy'
+         }
+     }
+]
 
 
 # -----------------------------------------------------------
@@ -44,12 +82,36 @@ $env.config.color_config.shape_external_resolved = "light_cyan_bold"
 # -----------------------------------------------------------
 
 
+let mime_to_lang = {
+    application/json: json,
+    application/xml: xml,
+    application/yaml: yaml,
+    text/csv: csv,
+    text/tab-separated-values: tsv,
+    text/x-toml: toml,
+    text/markdown: markdown,
+}
+
+
+
+$env.config.hooks.display_output = {
+    # if ($in | describe | str contains "table<name: string, type: string, size: filesize, modified: datetime>") { upsert name {|y| [$y.name] | grid -w 50 -c -i } | str trim } |
+    metadata access {|meta| match $meta.content_type? {
+        null => {}
+        "application/x-nuscript" | "application/x-nuon" | "text/x-nushell" => { nu-highlight },
+        $mimetype if $mimetype in $mime_to_lang => { ^bat -Ppf --language=($mime_to_lang | get $mimetype) },
+        _ => {},
+    }}
+    | if (term size).columns >= 100 { table -e } else { table } | default "" 
+}
+
+
 # Get last command display and put in a variable for further processing
-$env.config = ($env.config | upsert hooks {
-    display_output: {
-        if (term size).columns >= 100 { table -e } else { table } | default ""
-    }
-})
+# $env.config = ($env.config | upsert hooks {
+#     display_output: {
+#         if (term size).columns >= 100 { table -e } else { table } | default ""
+#     }
+# })
 
 
 # retrieve last command output
@@ -61,6 +123,20 @@ def last_c [] {
 # -----------------------------------------------------------
 #  Utilities
 # -----------------------------------------------------------
+
+def nudo [c: closure] {
+    to nuon | sudo $nu.current-exe --stdin -c $"from nuon | do (view source $c) | to nuon" | from nuon
+}
+
+def --wrapped "nushell test" [--no-config-home, --no-backtrace ...rest] {
+    if not $no_config_home {
+        $env.XDG_CONFIG_HOME = "";
+    }
+    if not $no_backtrace {
+        $env.RUST_BACKTRACE = 1;
+    }
+    cargo test --workspace ...$rest  -- --skip custom_arguments_and_subcommands --skip folder_with_directorycompletions --skip folder_with_directorycompletions_do_not_collapse_dots --skip folder_with_directorycompletions_with_three_trailing_dots
+}
 
 # Download file, using the filename provided by the url if necessary
 def download [
@@ -203,7 +279,7 @@ source (if ($__zoxide_path | path exists) { $__zoxide_path } else { null })
 #  Media Renamer
 # -----------------------------------------------------------
 
-def "mediafix tv" [--dry] {
+def "mediafix tv" [--dry-run(-d)] {
     let x = (input "Are you sure you want to do this? [y/N] ")
     ls | get name
        | parse "{show}.S{season}E{episode}.{junk}.mkv"
@@ -213,7 +289,7 @@ def "mediafix tv" [--dry] {
               new: $"($x.show | str replace '.' ' ') S($x.season)E($x.episode).mkv"
             }
         }
-       | each { |y| if $dry { print $"($y.old) -> ($y.new)" } else { mv $y.old $y.new } }
+       | each { |y| if $dry_run { $y } else { mv $y.old $y.new; $y } }
 }
 
 # -----------------------------------------------------------
