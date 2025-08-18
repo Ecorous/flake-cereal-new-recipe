@@ -659,6 +659,7 @@ alias gc = git commit -S -a -m
 alias gf = git fetch
 alias gch = git checkout
 alias gbr = git branch
+alias gm = git merge
 alias gpu = git push
 alias gpl = git pull
 alias g = git
