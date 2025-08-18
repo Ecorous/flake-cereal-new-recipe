@@ -656,6 +656,9 @@ path add ~/.local/bin
 alias gi = git init
 alias grao = git remote add origin
 alias gc = git commit -S -a -m
+alias gf = git fetch
+alias gch = git checkout
+alias gbr = git branch
 alias gpu = git push
 alias gpl = git pull
 alias g = git

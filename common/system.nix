@@ -70,6 +70,8 @@
     carapace
     ripgrep
     ripgrep-all
+    bat
+    discordo
   ];
 
   users.defaultUserShell = pkgs.nushell;

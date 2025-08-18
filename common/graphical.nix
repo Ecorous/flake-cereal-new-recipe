@@ -40,6 +40,7 @@
     protontricks
     protonup-ng
     protonup-qt
+    jellyfin-media-player
   ];
 
   services.xserver.xkb.layout = "gb";
