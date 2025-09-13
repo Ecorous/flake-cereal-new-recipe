@@ -92,10 +92,7 @@ let mime_to_lang = {
     text/markdown: markdown,
 }
 
-
-
 $env.config.hooks.display_output = {
-    # if ($in | describe | str contains "table<name: string, type: string, size: filesize, modified: datetime>") { upsert name {|y| [$y.name] | grid -w 50 -c -i } | str trim } |
     metadata access {|meta| match $meta.content_type? {
         null => {}
         "application/x-nuscript" | "application/x-nuon" | "text/x-nushell" => { nu-highlight },
@@ -655,6 +652,7 @@ path add ~/.local/bin
 
 alias gi = git init
 alias grao = git remote add origin
+alias ga = git add -A .
 alias gc = git commit -S -a -m
 alias gf = git fetch
 alias gch = git checkout

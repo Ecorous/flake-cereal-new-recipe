@@ -73,6 +73,14 @@
           file_server  
         '';
       };
+      "https://git.ecorous.org" = {
+        serverAliases = [
+          "http://git.ecorous.org"
+        ];
+        extraConfig = ''
+          reverse_proxy localhost:3002
+        '';
+      };
     };
   };
 }

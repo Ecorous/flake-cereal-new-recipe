@@ -125,7 +125,10 @@
     };
     ghostty = {
       enable = true;
-      settings.theme = "catppuccin-mocha";
+      settings = {
+        theme = "catppuccin_mocha";
+        cursor-style = "bar";
+      };
     };
     git = {
       enable = true;

@@ -72,6 +72,8 @@
     ripgrep-all
     bat
     discordo
+    tmux
+    mosh
   ];
 
   users.defaultUserShell = pkgs.nushell;

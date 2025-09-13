@@ -29,7 +29,6 @@
     finamp
     (flameshot.override { enableWlrSupport = true; })
     localsend
-    thunderbird-latest-unwrapped
     moonlight-qt
     pwvucontrol
     openrgb
@@ -41,12 +40,27 @@
     protonup-ng
     protonup-qt
     jellyfin-media-player
+    thunderbird
+    tor-browser
+  ];
+
+  nixpkgs.config.permittedInsecurePackages = [
+    "qtwebengine-5.15.19"
   ];
 
   services.xserver.xkb.layout = "gb";
 
-  fonts.fontconfig.enable = true;
-  fonts.packages = [ pkgs.nerd-fonts.jetbrains-mono ];
+  fonts.packages = with pkgs; [ 
+    nerd-fonts.jetbrains-mono
+    twitter-color-emoji
+  ];
+  fonts.fontconfig = {
+    enable = true;
+    defaultFonts = {
+      monospace = [ "JetbrainsMono Nerd Font Mono" ];
+      emoji = [ "Twitter Color Emoji" ];
+    };
+  };
 
   hardware.graphics = {
     enable = true;

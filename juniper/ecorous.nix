@@ -8,6 +8,7 @@
   imports = [
     ../common/ecorous.nix
     # ../common/sway-hm.nix
+    ../common/hyprland-hm.nix
   ];
 
   home.file."scripts/brightness_down.sh".source = ../files/brightness_down.sh;

@@ -10,12 +10,13 @@
     ./hardware.nix
     ../common/system.nix
     ../common/sway.nix
+    ../common/hyprland.nix
     ../common/plasma.nix
     # ../common/gnome.nix
     ../common/bluetooth.nix
   ];
 
-  services.displayManager.defaultSession = lib.mkForce "plasma";
+  services.displayManager.defaultSession = lib.mkForce "hyprland";
 
   environment.systemPackages = with pkgs; [
     nautilus
@@ -35,7 +36,7 @@
   services.displayManager.sddm.enable = lib.mkForce true;
   services.displayManager.gdm.enable = lib.mkForce false;
   qt.style = lib.mkForce "breeze";
-  qt.platformTheme = lib.mkForce "kde6";
+  qt.platformTheme = lib.mkForce "qt5ct";
 
   hardware.graphics.extraPackages = [ pkgs.intel-media-driver ];
 
