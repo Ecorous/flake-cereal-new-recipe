@@ -23,15 +23,16 @@
     brightnessctl
     adwaita-icon-theme
     adwaita-icon-theme-legacy
-    gnome-themes-extra
-    gnomeExtensions.tray-icons-reloaded
+    swaylock-effects
+    # gnome-themes-extra
+    # gnomeExtensions.tray-icons-reloaded
   ];
 
-  users.users.watch = {
-    description = "Watching";
-    isNormalUser = true;
-    shell = pkgs.nushell;
-  };
+  # users.users.watch = {
+  #   description = "Watching";
+  #   isNormalUser = true;
+  #   shell = pkgs.nushell;
+  # };
 
   services.displayManager.sddm.enable = lib.mkForce true;
   services.displayManager.gdm.enable = lib.mkForce false;
@@ -40,5 +41,10 @@
 
   hardware.graphics.extraPackages = [ pkgs.intel-media-driver ];
 
+  services.logind.settings.Login = {
+    HandleLidSwitch = "suspend";
+    HandleLidSwitchExternalPower = "ignore";
+  };
+  
   networking.hostName = "juniper";
 }

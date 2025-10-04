@@ -2,7 +2,7 @@
 +++ b/crates/nu-command/src/debug/evil.rs
 @@ -0,0 +1,59 @@
 +use nu_engine::command_prelude::*;
-+use nu_protocol::{BlockId, DeclId, debugger::WithoutDebug, Span, PipelineData, engine::StateWorkingSet};
++use nu_protocol::{BlockId, DeclId, debugger::WithoutDebug, Span, PipelineData, PipelineExecutionData, engine::StateWorkingSet};
 +
 +#[derive(Clone)]
 +pub struct Evil;
@@ -36,8 +36,8 @@
 +        engine_state: &EngineState,
 +        stack: &mut Stack,
 +        call: &Call,
-+        input: PipelineData,
-+    ) -> Result<PipelineData, ShellError> {
++        input: PipelineExecutionData,
++    ) -> Result<PipelineExecutionData, ShellError> {
 +        let val: String = call.req::<Spanned<String>>(engine_state, stack, 0)?.item;
 +        let mut engine_state = engine_state.clone();
 +
@@ -50,7 +50,7 @@
 +
 +        engine_state.merge_delta(working_set.render())?;
 +
-+        let pipeline_data: PipelineData = nu_engine::eval_block_with_early_return::<WithoutDebug>(
++        let pipeline_data: PipelineExecutionData = nu_engine::eval_block_with_early_return::<WithoutDebug>(
 +            &engine_state,
 +            // working_set.permanent(),
 +            stack,
