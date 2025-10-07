@@ -11,7 +11,7 @@
       settings = {
         main = {
           modules-left = [ "hyprland/workspaces" ];
-          modules-center = [ "hyprland/window" ];
+          modules-center = [ "hyprland/window" "custom/music" ];
           modules-right = [
             "backlight"
             "battery"
@@ -27,12 +27,52 @@
             format = "{title}";
             max-length = 50;
           };
+          "custom/music" = {
+            # "format": "  {}",
+            #         "escape": true,
+            #                 "interval": 5,
+            #                         "tooltip": false,
+            #                                 "exec": "playerctl metadata --format='{{ title }}'",
+            #                                         "on-click": "playerctl play-pause",
+            #                                                 "max-length": 50
+
+            format = " {}";
+            escape = true;
+            interval = 5;
+            tooltip = false;
+            exec = "playerctl metadata --format='{{ title }}'";
+            on-clickc = "playerctl play-pause";
+            max-length = 50;
+          };
           backlight = {
             display = "intel_backlight";
             format = "{percent}%";
           };
+          # 
+        # "battery": {
+        #   "states": {
+        #     "warning": 30,
+        #     "critical": 15
+        #   },    
+        #   "format": "{icon}",
+        #   "format-charging": "",
+        #   "format-plugged": "",
+        #   "format-alt": "{icon}",
+        #   "format-icons": ["", "",  "", "", "", "", "", "", "", "", "", ""]
+        # }
+        
           battery = {
             weighted-average = true;
+            states = {
+              warning = 30;
+              critical = 15;
+            };
+            format = "{capacity}%";
+            format-warning = "warning {capacity}%";
+            format-critical = "plug me in 🥺 {capacity}%";
+                        # format-icons = ["" "" "" "" "" "" "" "" "" "" "" ""];
+            # format-charging = "";
+            # format-plugged = "";
           };
           clock = {
             interval = 1;
@@ -43,89 +83,123 @@
           };
         };
       };
+      style = ''
+        @import "mocha.css";
+        
+        * {
+          font-family: "JetbrainsMono NF";
+          font-size: 12px;
+          min-height: 0;
+          background: transparent
+        }
+        waybar {
+           background: transparent;
+           color: @text;
+           margin: 5px 5px;
+           margin-bottom: 0px;
+         }
+        #window {
+          border-radius: 1rem;
+        }
+        
+         #workspaces {
+           border-radius: 1rem;
+           margin: 5px;
+           background-color: @surface0;
+           margin-left: 1rem;
+         }
+        
+         #workspaces button {
+           color: @lavender;
+           border-radius: 1rem;
+           padding: 0.5rem;
+         }
+        
+         #workspaces button.active {
+           color: @sky;
+           border-radius: 1rem;
+         }
+        
+         #workspaces button:hover {
+           color: @sapphire;
+           border-radius: 1rem;
+         }
+        
+         #window,
+         #hyprland-window,
+         #custom-music,
+         #tray,
+         #backlight,
+         #clock,
+         #battery,
+         #pulseaudio,
+         #custom-lock,
+         #custom-power {
+           background-color: @surface0;
+           padding: 0.5rem 1rem;
+           margin: 5px 0;
+         }
+        
+         #clock {
+           color: @blue;
+           border-radius: 0px 1rem 1rem 0px;
+           margin-right: 1rem;
+         }
+        
+         #battery {
+           color: @green;
+         }
+        
+         #battery.charging {
+           color: @green;
+         }
+        
+         #battery.warning:not(.charging) {
+           color: @red;
+         }
+        
+         #backlight {
+           color: @yellow;
+         }
+        
+         #battery {
+             border-radius: 0;
+         }
+
+         #backlight {
+            border-radius: 1rem 0px 0px 1rem;
+         }
+        
+         #pulseaudio {
+           color: @maroon;
+           border-radius: 1rem 0px 0px 1rem;
+           margin-left: 1rem;
+         }
+        
+         #custom-music {
+           color: @mauve;
+           border-radius: 1rem;
+         }
+        
+         #custom-lock {
+             border-radius: 1rem 0px 0px 1rem;
+             color: @lavender;
+         }
+        
+         #custom-power {
+             margin-right: 1rem;
+             border-radius: 0px 1rem 1rem 0px;
+             color: @red;
+         }
+        
+         #tray {
+           margin-right: 1rem;
+           border-radius: 1rem;
+         }
+      '';
     };
     hyprlock = {
       enable = true;
-      settings = {
-        source = [ "$HOME/.config/hypr/mocha.hypr.conf" ];
-        "$accent" = "$mauve";
-        "$accentAlpha" = "$mauveAlpha";
-        "$font" = "JetBrainsMono Nerd Font";
-
-        general = {
-          hide_cursor = false;
-        };
-
-        background = {
-          monitor = "";
-          color = "$base";
-        };
-
-        label = [
-          {
-            monitor = "";
-            text = "Layout: $LAYOUT";
-            color = "$text";
-            font_size = 25;
-            font_family = "$font";
-            position = "30, -30";
-            halign = "left";
-            valign = "top";
-          }
-          {
-            monitor = "";
-            text = "$TIME";
-            color = "$text";
-            font_size = 90;
-            font_family = "$font";
-            position = "-30, 0";
-            halign = "right";
-            valign = "top";
-          }
-          {
-            monitor = "";
-            text = "cmd[update:43200000] date +\"%A, %d %B %Y\"";
-            color = "$text";
-            font_size = 25;
-            font_family = "$font";
-            position = "-30, -150";
-            halign = "right";
-            valign = "top";
-          }
-        ];
-        image = [
-          {
-            monitor = "";
-            path = "$HOME/.face";
-            size = 100;
-            border_color = "$accent";
-            position = "0, 75";
-            halign = "center";
-            valign = "center";
-          }
-        ];
-        input-field = {
-          monitor = "";
-          size = "300, 60";
-          outline_thickness = 4;
-          dots_size = 0.2;
-          dots_spacing = 0.2;
-          dots_center = true;
-          outer_color = "$accent";
-          inner_color = "$surface0";
-          font_color = "$text";
-          fade_on_empty = false;
-          placeholder_text = "<span foreground=\"##$textAlpha\"><i> Logged in as </i><span foreground=\"##$accentAlpha\">$USER</span></span>";
-          hide_input = false;
-          check_color = "$accent";
-          fail_color = "$red";
-          fail_text = "<i>$FAIL <b>($ATTEMPTS)</b></i>";
-          capslock_color = "$yellow";
-          position = "0, -47";
-          halign = "center";
-          valign = "cetner";
-        };     
-      };
     };
   };
   services.hyprpaper = {
@@ -195,9 +269,9 @@
           natural_scroll = true;
         };
       };
-      gestures = {
-        workspace_swipe = true;
-      };
+      gesture = [
+        "3, horizontal, workspace"
+      ];
       dwindle = {
         pseudotile = true;
         preserve_split = true;
@@ -262,11 +336,14 @@
         ",XF86Tools, exec, /home/ecorous/scripts/brightness_toggle.nu"
         ",XF86Search, exec, /home/ecorous/scripts/brightness_set_1.sh"
       ];
+      bindl = [
+        ", switch:Lid Switch, exec, hyprlock"
+      ];
 
       exec-once = [
         "kwalletd &"
         "ghostty & mako & waybar & hyprpaper"
-        "nm-applet &"
+        "bash -c \"sleep 5; nm-applet &\" &"
       ];
     };
   };
@@ -320,4 +397,5 @@
     };
   };
   home.file.".config/hypr/mocha.hypr.conf".source = ../files/mocha.hypr.conf;
+  home.file.".config/waybar/mocha.css".source = ../files/mocha.waybar.css;
 }

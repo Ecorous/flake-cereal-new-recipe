@@ -126,7 +126,7 @@
     ghostty = {
       enable = true;
       settings = {
-        theme = "catppuccin_mocha";
+        theme = "Catppuccin Mocha";
         cursor-style = "bar";
       };
     };
