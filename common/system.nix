@@ -6,7 +6,7 @@
 }:
 
 {
-  imports = [ ./upgrade-diff.nix ];
+  imports = [ ./upgrade-diff.nix ./nushellWith.nix ];
   nix.settings.experimental-features = [
     "nix-command"
     "flakes"
