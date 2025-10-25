@@ -5,7 +5,7 @@
   inputs,
   ...
 }: let pkgs = import nixpkgs {
-    system = ${pkgs.system};
+    system = "x86_64-linux";
     overlays = [ nushellWith.overlays.default ];
   }; in {
   environment.systemPackages = [
