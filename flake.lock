@@ -1,5 +1,20 @@
 {
   "nodes": {
+    "crane": {
+      "locked": {
+        "lastModified": 1759893430,
+        "narHash": "sha256-yAy4otLYm9iZ+NtQwTMEbqHwswSFUbhn7x826RR6djw=",
+        "owner": "ipetkov",
+        "repo": "crane",
+        "rev": "1979a2524cb8c801520bd94c38bb3d5692419d93",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ipetkov",
+        "repo": "crane",
+        "type": "github"
+      }
+    },
     "fjordlauncher": {
       "inputs": {
         "libnbtplusplus": "libnbtplusplus",
@@ -231,6 +246,77 @@
         "type": "github"
       }
     },
+    "nixpkgs_5": {
+      "locked": {
+        "lastModified": 1760965567,
+        "narHash": "sha256-0JDOal5P7xzzAibvD0yTE3ptyvoVOAL0rcELmDdtSKg=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "cb82756ecc37fa623f8cf3e88854f9bf7f64af93",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixpkgs-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nu-batteries-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1760054757,
+        "narHash": "sha256-pFKGR1QDKuLc8F53H5hQjP/+NeYPJpIu/MGCSjS3iLk=",
+        "owner": "nome",
+        "repo": "nu-batteries",
+        "rev": "187797585d9f4dd6a2b696d0572eb2b2f2aacd23",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nome",
+        "repo": "nu-batteries",
+        "type": "github"
+      }
+    },
+    "nushell-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1761348634,
+        "narHash": "sha256-RqfA5ue7tVSAP2ShkQAs149gy2FN3l+z6f1Lra4xH04=",
+        "owner": "nushell",
+        "repo": "nushell",
+        "rev": "08f6b6ac3da71e1614828d28982ce9b0bb22950f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nushell",
+        "repo": "nushell",
+        "type": "github"
+      }
+    },
+    "nushellWith": {
+      "inputs": {
+        "crane": "crane",
+        "nixpkgs": "nixpkgs_5",
+        "nu-batteries-src": "nu-batteries-src",
+        "nushell-src": "nushell-src",
+        "webserver-nu-src": "webserver-nu-src"
+      },
+      "locked": {
+        "lastModified": 1761352051,
+        "narHash": "sha256-lJAYmn5mhb8rc8Kg3cX5sYKTiPtVLe4+iLHZqLmikTI=",
+        "owner": "YPares",
+        "repo": "nushellWith",
+        "rev": "08a8ad09165a0ff3903832a58e3bc8bdded37145",
+        "type": "github"
+      },
+      "original": {
+        "owner": "YPares",
+        "ref": "nu-nightly",
+        "repo": "nushellWith",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "fjordlauncher": "fjordlauncher",
@@ -238,7 +324,24 @@
         "nix-alien": "nix-alien",
         "nix-ld": "nix-ld",
         "nixos-wsl": "nixos-wsl",
-        "nixpkgs": "nixpkgs_4"
+        "nixpkgs": "nixpkgs_4",
+        "nushellWith": "nushellWith"
+      }
+    },
+    "webserver-nu-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1748017303,
+        "narHash": "sha256-s6FBAD50VUKd68rGBaMwTCKwExfZpUmCzyBoguqWNeQ=",
+        "owner": "Jan9103",
+        "repo": "webserver.nu",
+        "rev": "24820fea036d060e9c48fd2384dcd0d7e4889fb3",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Jan9103",
+        "repo": "webserver.nu",
+        "type": "github"
       }
     }
   },

@@ -6,6 +6,6 @@
   ...
 }: {
   environment.systemPackages = [
-    pkgs.nushell
+    (nushellWith.packages.${pkgs.system}.nushell)
   ];
 }
