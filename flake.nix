@@ -1,4 +1,9 @@
 {
+  nixConfig = {
+    extra-substitutors = [ "https://cache.garnix.io" ];
+    extra-trusted-public-keys = [ "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g=" ];
+  };
+    
   description = "Flake Cereal - Brand new recipe!";
 
   inputs = {
@@ -10,6 +15,7 @@
     nix-alien.url = "github:thiagokokada/nix-alien";
     nixos-wsl.url = "github:nix-community/NixOS-WSL/main";
     fjordlauncher.url = "github:unmojang/fjordlauncher";
+    nushellWith.url = "github:YPares/nushellWith/nu-nightly";
   };
 
   outputs =
@@ -21,12 +27,14 @@
       nixos-wsl,
       nix-alien,
       fjordlauncher,
+      nushellWith
     }:
     {
+      
       nixosConfigurations = {
         juniper = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
-          specialArgs = { inherit inputs self fjordlauncher; };
+          specialArgs = { inherit inputs self fjordlauncheri nushellWith; };
           modules = [
             nix-ld.nixosModules.nix-ld
             ./common/nix-ld.nix
@@ -45,7 +53,7 @@
         };
         yggdrasil = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
-          specialArgs = { inherit inputs self fjordlauncher; };
+          specialArgs = { inherit inputs self fjordlauncher nushellWith; };
           modules = [
             nix-ld.nixosModules.nix-ld
             ./common/nix-ld.nix
@@ -58,7 +66,7 @@
         };
         wsl-nixos = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
-          specialArgs = { inherit inputs self; };
+          specialArgs = { inherit inputs self nushellWith; };
           modules = [
             nixos-wsl.nixosModules.default
             nix-ld.nixosModules.nix-ld
