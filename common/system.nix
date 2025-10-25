@@ -74,6 +74,7 @@
     discordo
     tmux
     mosh
+    jujutsu
   ];
 
   users.defaultUserShell = pkgs.nushell;
