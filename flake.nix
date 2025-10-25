@@ -34,7 +34,7 @@
       nixosConfigurations = {
         juniper = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
-          specialArgs = { inherit inputs self fjordlauncheri nushellWith; };
+          specialArgs = { inherit inputs self fjordlauncher nushellWith; };
           modules = [
             nix-ld.nixosModules.nix-ld
             ./common/nix-ld.nix
