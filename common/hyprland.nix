@@ -13,5 +13,11 @@
     dissent
   ];
   environment.sessionVariables.GTK_THEME = "Adwaita-dark";
-  security.pam.services.hyprlock = {};
+  security.pam.services = {
+    hyprlock = {};
+    ecorous.kwallet = {
+      enable = true;
+      package = pkgs.kdePackages.kwallet-pam;
+    };
+  };
 }

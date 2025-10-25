@@ -214,7 +214,7 @@
     enable = true;
     settings = {
       source = [ "$HOME/.config/hypr/mocha.hypr.conf" ]; 
-      monitor = "eDP-1,1366x768@60,0x0,1";
+      monitor = ["eDP-1,1366x768@60,0x0,1" "DP-2,1920x1080@60,1366x0,1.3"];
       "$accent" = "$mauve";
     
       general = {
@@ -291,6 +291,7 @@
         "$mainMod, D, exec, $menu"
         "$mainMod, P, pseudo,"
         "$mainMod, J, togglesplit,"
+        "$mainMod, L, exec, hyprlock"
 
         "$mainMod, left, moveFocus, l"
         "$mainMod, right, moveFocus, r"
@@ -307,6 +308,16 @@
         "$mainMod, 8, workspace, 8"
         "$mainMod, 9, workspace, 9"
         "$mainMod, 0, workspace, 10"
+        "$mainMod, F1, workspace, 11"
+        "$mainMod, F2, workspace, 12"
+        "$mainMod, F3, workspace, 13"
+        "$mainMod, F4, workspace, 14"
+        "$mainMod, F5, workspace, 15"
+        "$mainMod, F6, workspace, 16"
+        "$mainMod, F7, workspace, 17"
+        "$mainMod, F8, workspace, 18"
+        "$mainMod, F9, workspace, 19"
+        "$mainMod, F10, workspace, 20"
 
         "$mainMod SHIFT, 1, movetoworkspace, 1"
         "$mainMod SHIFT, 2, movetoworkspace, 2"
@@ -318,9 +329,21 @@
         "$mainMod SHIFT, 8, movetoworkspace, 8"
         "$mainMod SHIFT, 9, movetoworkspace, 9"
         "$mainMod SHIFT, 0, movetoworkspace, 10"
+        "$mainMod SHIFT, F1, movetoworkspace, 11"
+        "$mainMod SHIFT, F2, movetoworkspace, 12"
+        "$mainMod SHIFT, F3, movetoworkspace, 13"
+        "$mainMod SHIFT, F4, movetoworkspace, 14"
+        "$mainMod SHIFT, F5, movetoworkspace, 15"
+        "$mainMod SHIFT, F6, movetoworkspace, 16"
+        "$mainMod SHIFT, F7, movetoworkspace, 17"
+        "$mainMod SHIFT, F8, movetoworkspace, 18"
+        "$mainMod SHIFT, F9, movetoworkspace, 19"
+        "$mainMod SHIFT, F10, movetoworkspace, 20"
 
-        "$mainMod, mouse_down, workspace, e+1"
-        "$mainMod, mouse_up, workspace, e-1"
+        ", F14, exec, wtype \"🥺\""
+        
+        "$mainMod, mouse_down, workspace, e-1"
+        "$mainMod, mouse_up, workspace, e+1"
       ];
       bindm = [
         "$mainMod, mouse:272, movewindow"
@@ -331,6 +354,7 @@
         ",XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
         ",XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
         ",XF86AudioMicMute, exec, wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"
+        ",XF86AudioPlay, exec, playerctl play-pause"
         ",XF86MonBrightnessUp, exec, brightnessctl -e4 -n2 set 5%+"
         ",XF86MonBrightnessDown, exec, brightnessctl -e4 -n2 set 5%-"
         ",XF86Tools, exec, /home/ecorous/scripts/brightness_toggle.nu"

@@ -42,6 +42,9 @@
     jellyfin-media-player
     thunderbird
     tor-browser
+    qbittorrent
+    wtype
+    via
   ];
 
   nixpkgs.config.permittedInsecurePackages = [
