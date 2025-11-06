@@ -75,6 +75,8 @@
     tmux
     mosh
     jujutsu
+    jq
+    openssl
   ];
 
   users.defaultUserShell = pkgs.nushell;
