@@ -676,6 +676,7 @@ alias brctl = brightnessctl
 alias cat = open -r
 alias grep = rg
 
+alias pw = packwiz
 
 # -----------------------------------------------------------
 #  NixOS-related commands.
