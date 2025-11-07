@@ -45,6 +45,7 @@
     qbittorrent
     wtype
     via
+    pulseaudio
   ];
 
   nixpkgs.config.permittedInsecurePackages = [
