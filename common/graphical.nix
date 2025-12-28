@@ -46,10 +46,12 @@
     wtype
     via
     pulseaudio
+    megasync
   ];
 
   nixpkgs.config.permittedInsecurePackages = [
     "qtwebengine-5.15.19"
+    "jitsi-meet-1.0.8792"
   ];
 
   services.xserver.xkb.layout = "gb";

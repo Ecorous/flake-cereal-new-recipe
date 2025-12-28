@@ -16,6 +16,13 @@
     ../common/bluetooth.nix
   ];
 
+  boot.loader.systemd-boot.enable = lib.mkForce false;
+  boot.loader.grub = {
+    enable = true;
+    efiSupport = true;
+    device = "nodev";
+  };
+
   services.displayManager.defaultSession = lib.mkForce "hyprland";
 
   environment.systemPackages = with pkgs; [

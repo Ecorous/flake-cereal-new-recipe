@@ -181,6 +181,7 @@
     alwaysKeepRunning = true;
     settings = {
       interface = "br0";
+      bind-interfaces = true;
       domain = "elder,192.168.69.1";
       dhcp-range = "192.168.69.5,192.168.69.254,5m";
       dhcp-option = [
@@ -197,7 +198,7 @@
         "127.0.0.1"
         "192.168.69.1"
         "192.168.1.242"
-        "0.0.0.0"
+        # "0.0.0.0"
       ];
       expand-hosts = true;
       server = [
