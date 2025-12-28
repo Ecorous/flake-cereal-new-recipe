@@ -233,5 +233,5 @@ def "mommy reset" [] {
     mommy save { $mommy_defaults }
 }
 
-$env.PROMPT_COMMAND_RIGHT = {|| mommy $env.LAST_EXIT_CODE }
 if (mommy get startup_messages_enabled) { mommy startup }
+$env.PROMPT_COMMAND_RIGHT = {|| mommy $env.LAST_EXIT_CODE }
