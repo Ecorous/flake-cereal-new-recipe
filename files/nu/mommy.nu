@@ -27,6 +27,7 @@ const mommy_defaults = {
     prefix: "",
     suffix: "~",
     capitalize: false,
+    startup_messages_enabled: true,
     startup_messages: [
         "hai little $little",
         "is $caregiver's little $little ready for some fun?"
@@ -233,4 +234,4 @@ def "mommy reset" [] {
 }
 
 $env.PROMPT_COMMAND_RIGHT = {|| mommy $env.LAST_EXIT_CODE }
-mommy startup
+if (mommy get startup_messages_enabled) { mommy startup }
