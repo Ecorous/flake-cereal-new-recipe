@@ -607,6 +607,10 @@ def "services stop" [name: string] {
 #  Config Setup
 # ----------------------------------------------------------
 
+def edit [path: path] {
+    ^($env.config.buffer_editor | default $env.VISUAL | default $env.EDITOR) $path
+}
+
 alias "core config nu" = config nu
 def "config nu" [
     --local(-l) # Open the local config file (`$nu.config-path`) instead of the `$flake_path/files/config.nu`
@@ -618,10 +622,19 @@ def "config nu" [
     } else if $default {
         core config nu --default 
     } else if $local { core config nu } else {
-        let editor = $env.config.buffer_editor | default $env.VISUAL | default $env.EDITOR
-        ^$editor $"($flake_path)/files/config.nu"
+        edit $"($flake_path)/files/config.nu"
     }
 }
+
+def "config helix" [] { edit ~/.config/helix/config.toml }
+
+alias "config hx" = config helix
+
+def "config niri" [] { edit ~/.config/niri/config.kdl }
+
+def "config waybar" [] { edit ~/.config/waybar/ }
+
+def "config mako" [] { edit ~/.config/mako/config  } 
 
 # -----------------------------------------------------------
 #  WSL environment setup
