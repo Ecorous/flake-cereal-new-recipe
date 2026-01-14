@@ -13,7 +13,10 @@ $env.VISUAL = "hx";
 $env.config.buffer_editor = "hx";
 
 $env.PROMPT_COMMAND = {||
-    let dir = match (do -i { $env.PWD | path relative-to $nu.home-path }) {
+    let dir = match (do -i {
+        if ('home-path' in $nu) {
+            $env.PWD | path relative-to $nu.home-path
+        } else { ($env.PWD | path relative-to $nu.home-dir)} }) {
         null => $env.PWD
         '' => '~'
         $relative_pwd => ([~ $relative_pwd] | path join)
