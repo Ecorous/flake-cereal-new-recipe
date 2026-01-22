@@ -102,7 +102,7 @@ $env.config.hooks.display_output = {
         $mimetype if $mimetype in $mime_to_lang => { ^bat -Ppf --language=($mime_to_lang | get $mimetype) },
         _ => {},
     }}
-    | if (term size).columns >= 100 { table -e } else { table } | default "" 
+    | if (term size).columns >= 100 { table -e -o } else { table -o } | default "" 
 }
 
 
